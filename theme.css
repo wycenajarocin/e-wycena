@@ -1,0 +1,283 @@
+/* ============================================================================
+   WYCENA — wspólny motyw dla podstron modułu nieruchomości
+   (nieruchomosci.html, oferta.html, admin.html)
+
+   Zmienne, nawigacja, przyciski, nagłówek strony i stopka — identyczne jak
+   w index.html, żeby całość wyglądała spójnie. Plik jest wspólny i
+   cache'owany przez przeglądarkę, więc kolejne podstrony ładują się szybciej.
+   ============================================================================ */
+
+:root{
+  --navy: #3A4853;
+  --navy-deep: #232C33;
+  --navy-deepest: #1A2127;
+  --blue: #196DAD;
+  --blue-light: #4A93CE;
+  --blue-pale: #E7F1FA;
+  --paper: #F4F7FA;
+  --white: #FFFFFF;
+  --ink: #232C33;
+  --ink-soft: #5B6773;
+  --line: rgba(58,72,83,0.14);
+  --radius: 4px;
+  --ok: #1E7A47;
+  --warn: #C97A2E;
+  --danger: #B3261E;
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  font-family:'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  line-height: 1.6;
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3,.display{
+  font-family:'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+a{ color: inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+button{ font-family: inherit; }
+
+.container{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (max-width: 560px){
+  .container{ padding: 0 18px; }
+}
+
+.visually-hidden{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---------- Nav ---------- */
+.nav{
+  background: var(--navy-deepest);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+}
+.nav .container{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color: var(--white);
+}
+.brand img{ height: 40px; width:auto; }
+.brand-text{ display:flex; flex-direction:column; line-height:1.15; }
+.brand-text strong{ font-family:'Space Grotesk',sans-serif; font-size:1.05rem; font-weight:600; }
+.brand-text span{ font-size:0.72rem; color: rgba(255,255,255,0.68); letter-spacing:0.02em; }
+
+.nav-links{
+  display:flex;
+  gap: 36px;
+  font-size: 0.94rem;
+  color: rgba(255,255,255,0.85);
+}
+.nav-links a{ transition: color .2s ease; padding-bottom: 4px; border-bottom: 2px solid transparent; }
+.nav-links a:hover{ color: var(--white); }
+.nav-links a.active{ color: var(--white); border-bottom-color: var(--blue-light); }
+
+/* Hamburger — widoczny tylko na małych ekranach */
+.nav-toggle{
+  display:none;
+  width: 42px; height: 42px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: var(--radius);
+  color: var(--white);
+  cursor:pointer;
+  align-items:center; justify-content:center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+}
+.nav-toggle span{
+  display:block; width:18px; height:2px; background: currentColor; border-radius: 2px;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 860px){
+  .nav-toggle{ display:flex; }
+  .nav-links{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--navy-deepest);
+    flex-direction: column;
+    gap: 0;
+    padding: 6px 0 14px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 18px 30px rgba(0,0,0,0.28);
+    display: none;
+  }
+  .nav-links.open{ display:flex; }
+  .nav-links a{
+    padding: 14px 32px;
+    border-bottom: none;
+    border-left: 3px solid transparent;
+  }
+  .nav-links a.active{ border-left-color: var(--blue-light); background: rgba(255,255,255,0.05); }
+  .nav{ position: sticky; }
+  .nav .container{ position: relative; }
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding: 14px 28px;
+  font-family:'Inter',sans-serif;
+  font-weight: 600;
+  font-size: 0.96rem;
+  border-radius: var(--radius);
+  border: 1.5px solid transparent;
+  cursor:pointer;
+  text-align:center;
+  transition: transform .18s ease, background .2s ease, border-color .2s ease, color .2s ease;
+}
+.btn:hover{ transform: translateY(-2px); }
+.btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
+.btn-primary{ background: var(--blue); color: var(--white); }
+.btn-primary:hover{ background: #1c7cc4; }
+.btn-outline-navy{ background: transparent; color: var(--navy); border-color: var(--navy); }
+.btn-outline-navy:hover{ background: var(--navy); color: var(--white); }
+.btn-outline-white{ background: transparent; color: var(--white); border-color: rgba(255,255,255,0.5); }
+.btn-outline-white:hover{ border-color: var(--white); background: rgba(255,255,255,0.08); }
+.btn-sm{ padding: 9px 16px; font-size: 0.85rem; }
+.btn-danger{ background: transparent; color: var(--danger); border-color: rgba(179,38,30,0.4); }
+.btn-danger:hover{ background: var(--danger); color: var(--white); border-color: var(--danger); }
+
+/* ---------- Page header ---------- */
+.page-header{
+  background: var(--navy-deep);
+  color: var(--white);
+  padding: 64px 0 56px;
+}
+.breadcrumb{
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 18px;
+}
+.breadcrumb a:hover{ color: var(--white); }
+.page-header h1{
+  font-size: clamp(1.75rem, 3.4vw, 2.6rem);
+  margin-bottom: 14px;
+  max-width: 720px;
+}
+.page-header p{
+  color: rgba(255,255,255,0.72);
+  max-width: 620px;
+  font-size: 1.02rem;
+  margin: 0;
+}
+@media (max-width: 560px){
+  .page-header{ padding: 40px 0 36px; }
+}
+
+/* ---------- Footer ---------- */
+footer{
+  background: var(--navy-deepest);
+  color: rgba(255,255,255,0.75);
+  padding: 56px 0 28px;
+}
+.footer-top{
+  display:flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding-bottom: 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 24px;
+}
+.footer-brand{ display:flex; gap:14px; align-items:center; max-width: 340px; }
+.footer-brand img{ height: 42px; width: auto; flex-shrink: 0; }
+.footer-brand strong{ font-family:'Space Grotesk',sans-serif; color:var(--white); font-size:1.05rem; }
+.footer-brand p{ margin: 6px 0 0; font-size: 0.86rem; color: rgba(255,255,255,0.55); }
+.footer-contact{ display:flex; gap: 40px; flex-wrap: wrap; }
+.footer-contact h4{
+  font-family:'Space Grotesk',sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.footer-contact p{ margin:0; font-size: 0.9rem; }
+.footer-contact a:hover{ color: var(--white); }
+.footer-bottom{
+  display:flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+}
+
+/* ---------- Wspólne elementy stanu ---------- */
+.notice{
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 0.92rem;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+.notice-error{ border-color: rgba(179,38,30,0.35); background: #FDF3F2; color: #7F1D18; }
+.notice-ok{ border-color: rgba(25,109,173,0.3); background: var(--blue-pale); color: #14507F; }
+.notice-warn{ border-color: rgba(201,122,46,0.35); background: #FDF6EE; color: #7A4715; }
+
+.skeleton{
+  background: linear-gradient(100deg, #E9EEF3 30%, #F5F8FA 50%, #E9EEF3 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+  border-radius: var(--radius);
+}
+@keyframes shimmer{
+  0%{ background-position: 200% 0; }
+  100%{ background-position: -200% 0; }
+}
+
+.badge{
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.92);
+  color: var(--navy);
+  display:inline-block;
+}
+.badge.sale{ background: var(--blue); color: var(--white); }
+.badge.rent{ background: var(--warn); color: var(--white); }
+.badge.status{ background: var(--navy-deep); color: var(--white); }

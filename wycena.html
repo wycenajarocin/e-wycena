@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wycena nieruchomości | Wycena — Beata Adamkiewicz-Dudek</title>
+<meta name="description" content="Rzetelna wycena nieruchomości sporządzona przez rzeczoznawcę majątkowego: mieszkania, domy, działki i lokale użytkowe. Zamów operat szacunkowy online.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.e-wycena.com.pl/wycena.html" id="canonicalLink">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wycena — Beata Adamkiewicz-Dudek">
+<meta property="og:title" content="Wycena nieruchomości">
+<meta property="og:description" content="Rzetelna wycena nieruchomości sporządzona przez rzeczoznawcę majątkowego.">
+<meta property="og:image" content="logo-white.png" id="ogImage">
+<meta property="og:locale" content="pl_PL">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="logo-white.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css?v=2">
+<style>
+  .intro-section{ padding: 56px 0 8px; }
+  .intro-section p{ max-width: 680px; color: var(--ink-soft); font-size: 1.05rem; margin: 0; }
+
+  /* ---------- Formularz kontaktowy ---------- */
+  .contact-section{ padding: 56px 0 100px; }
+  .contact-card{
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 48px;
+    box-shadow: 0 30px 60px rgba(35,44,51,0.08);
+  }
+  .contact-card h2{ font-size: clamp(1.5rem, 2.6vw, 1.9rem); margin-bottom: 12px; text-align:center; }
+  .contact-card > p{ color: var(--ink-soft); text-align:center; max-width: 460px; margin: 0 auto 36px; }
+  .form-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-grid .full{ grid-column: 1 / -1; }
+  .form-field{ display:flex; flex-direction:column; gap:8px; }
+  .form-field label{ font-size: 0.86rem; font-weight:600; color: var(--ink); }
+  .form-field input, .form-field select, .form-field textarea{
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-family:'Inter',sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--paper);
+    outline:none;
+    transition: border-color .18s ease;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus{ border-color: var(--blue); }
+  .form-field textarea{ resize: vertical; min-height: 110px; font-family: inherit; }
+  .form-submit-row{ margin-top: 30px; text-align:center; }
+  .form-submit-row .btn{ width: 100%; max-width: 320px; }
+  #formNotice{ margin-top: 22px; display:none; }
+  @media (max-width: 560px){
+    .contact-card{ padding: 32px 22px; }
+    .form-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <img src="logo-white.png" alt="Logo kancelarii Wycena" width="631" height="763">
+      <div class="brand-text">
+        <strong>Wycena</strong>
+        <span>Beata Adamkiewicz-Dudek</span>
+      </div>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="wycena.html" class="active">Wycena</a>
+      <a href="posrednictwo.html">Pośrednictwo</a>
+      <a href="nieruchomosci.html">Nieruchomości</a>
+      <a href="index.html#standardy">Standardy</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Strona główna</a> / Wycena</p>
+    <h1>Wycenimy Twoją nieruchomość</h1>
+    <p>Jako rzeczoznawca majątkowy sporządzam rzetelne operaty szacunkowe zgodne z prawem i standardami zawodowymi — dla osób prywatnych, banków oraz urzędów.</p>
+  </div>
+</header>
+
+<section class="intro-section">
+  <div class="container">
+    <p>Wyceniam mieszkania, domy, działki i lokale użytkowe. Operat może posłużyć do sprzedaży, zabezpieczenia kredytu, sprawy spadkowej czy postępowania sądowego. Wypełnij poniższy formularz, a skontaktuję się, aby ustalić szczegóły i termin wyceny.</p>
+  </div>
+</section>
+
+<section class="contact-section" id="formularz">
+  <div class="container">
+    <div class="contact-card">
+      <h2>Zamów wycenę nieruchomości</h2>
+      <p>Podaj kilka informacji o nieruchomości, a przygotuję dla Ciebie indywidualną wycenę.</p>
+
+      <form id="contactForm">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="cf-name">Imię i nazwisko</label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="Jan Kowalski" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-phone">Telefon</label>
+            <input type="tel" id="cf-phone" name="phone" autocomplete="tel" placeholder="+48 000 000 000" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-email">E-mail</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" placeholder="jan@przyklad.pl" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-type">Co ma być wycenione?</label>
+            <select id="cf-type" name="type">
+              <option value="">Wybierz typ</option>
+              <option value="mieszkanie">Mieszkanie</option>
+              <option value="dom">Dom</option>
+              <option value="dzialka">Działka</option>
+              <option value="lokal">Lokal użytkowy</option>
+              <option value="inne">Inne</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label for="cf-purpose">Cel wyceny</label>
+            <select id="cf-purpose" name="purpose">
+              <option value="">Wybierz cel</option>
+              <option value="sprzedaz-zakup">Sprzedaż lub zakup nieruchomości</option>
+              <option value="kredyt">Zabezpieczenie kredytu hipotecznego (bank)</option>
+              <option value="spadek">Podział majątku / sprawa spadkowa</option>
+              <option value="darowizna">Darowizna</option>
+              <option value="sad">Postępowanie sądowe</option>
+              <option value="urzad">Aktualizacja opłat / ewidencja majątku (urząd, przedsiębiorstwo)</option>
+              <option value="inne">Inne</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label for="cf-message">Wiadomość</label>
+            <textarea id="cf-message" name="message" placeholder="Dodatkowe informacje o nieruchomości…"></textarea>
+          </div>
+        </div>
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="form-submit-row">
+          <button type="submit" class="btn btn-primary" id="cf-submit">Zamów wycenę</button>
+        </div>
+        <div class="notice" id="formNotice" style="display:none"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <a href="index.html" class="footer-brand">
+        <img src="logo-white.png" alt="Logo kancelarii Wycena" width="631" height="763">
+        <div>
+          <strong>Wycena — Beata Adamkiewicz-Dudek</strong>
+          <p>Rzeczoznawca majątkowy. Rzetelne wyceny nieruchomości od 12 lat.</p>
+        </div>
+      </a>
+      <div class="footer-contact" id="footerContact"></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Wycena Beata Adamkiewicz-Dudek. Wszelkie prawa zastrzeżone.</span>
+      <span>12 lat doświadczenia w wycenie nieruchomości</span>
+    </div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const API = window.WycenaAPI || {};
+  const esc = API.esc || function (s) { return s == null ? '' : String(s); };
+  const CFG = window.WYCENA_CONFIG || {};
+
+  /* ---------------- menu mobilne ---------------- */
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  /* ---------------- stopka + kontakt z config.js ---------------- */
+  function renderContact() {
+    const b = CFG.business || {};
+    document.getElementById('footerContact').innerHTML =
+      '<div><h4>Telefon</h4><p><a href="tel:' + esc(b.phoneHref || '') + '">' + esc(b.phone || '') + '</a></p></div>' +
+      '<div><h4>E-mail</h4><p><a href="mailto:' + esc(b.email || '') + '">' + esc(b.email || '') + '</a></p></div>' +
+      '<div><h4>Obszar działania</h4><p>' + esc(b.area || '') + '</p></div>';
+
+    if (CFG.siteUrl && CFG.siteUrl.indexOf('TWOJADOMENA') === -1) {
+      const base = String(CFG.siteUrl).replace(/\/$/, '');
+      document.getElementById('canonicalLink').href = base + '/wycena.html';
+      document.getElementById('ogImage').setAttribute('content', base + '/logo-white.png');
+    }
+  }
+  renderContact();
+
+  /* ---------------- formularz kontaktowy ----------------
+     Wysyłka przez FormSubmit.co (bez własnego backendu), prosto na
+     adres z config.js (business.email) — tak samo jak w posrednictwo.html. */
+  const form = document.getElementById('contactForm');
+  const notice = document.getElementById('formNotice');
+  const submitBtn = document.getElementById('cf-submit');
+
+  function showNotice(kind, text) {
+    notice.className = 'notice notice-' + kind;
+    notice.textContent = text;
+    notice.style.display = 'block';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = (CFG.business && CFG.business.email) || '';
+    if (!email) {
+      showNotice('error', 'Brak skonfigurowanego adresu e-mail odbiorcy. Skontaktuj się z nami telefonicznie.');
+      return;
+    }
+
+    const fd = new FormData(form);
+    fd.append('_subject', 'Nowe zapytanie o wycenę nieruchomości');
+    fd.append('_template', 'table');
+    fd.append('_captcha', 'false');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wysyłanie…';
+    notice.style.display = 'none';
+
+    fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: fd,
+    })
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (result) {
+        if (!result.ok) { throw new Error('send failed'); }
+        showNotice('ok', 'Dziękujemy! Zapytanie o wycenę zostało wysłane — odezwiemy się najszybciej, jak to możliwe.');
+        form.reset();
+      })
+      .catch(function () {
+        const phone = (CFG.business && CFG.business.phone) || '';
+        showNotice('error', 'Nie udało się wysłać wiadomości. Spróbuj ponownie lub zadzwoń do nas' + (phone ? ': ' + phone : '.'));
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Zamów wycenę';
+      });
+  });
+})();
+</script>
+</body>
+</html>

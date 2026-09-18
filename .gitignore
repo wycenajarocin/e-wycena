@@ -1,0 +1,25 @@
+# ============================================================================
+#  Pliki, które NIE mogą trafić do repozytorium / na serwer strony
+# ============================================================================
+
+# Sekrety Edge Functions (klucz OpenAI!)
+supabase/.env.secrets
+supabase/.env
+.env
+.env.*
+!supabase/.env.secrets.example
+
+# Hasło do Supabase — nie może trafić do repo ani na hosting
+haslosupabase.txt
+
+# Pliki tymczasowe Supabase CLI
+supabase/.temp/
+supabase/.branches/
+
+# Śmieci systemowe i edytorów
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.log

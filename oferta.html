@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oferta nieruchomości | Wycena — Beata Adamkiewicz-Dudek</title>
+<meta name="description" content="Szczegóły oferty nieruchomości kancelarii rzeczoznawcy majątkowego Beata Adamkiewicz-Dudek." id="metaDescription">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="" id="canonicalLink">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Wycena — Beata Adamkiewicz-Dudek">
+<meta property="og:title" content="Oferta nieruchomości" id="ogTitle">
+<meta property="og:description" content="" id="ogDescription">
+<meta property="og:image" content="" id="ogImage">
+<meta property="og:url" content="" id="ogUrl">
+<meta property="og:locale" content="pl_PL">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="logo-white.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css?v=2">
+<style>
+  .offer-wrap{ padding: 40px 0 90px; }
+  @media (max-width: 680px){ .offer-wrap{ padding: 24px 0 60px; } }
+
+  .offer-top{
+    display:flex;
+    justify-content: space-between;
+    align-items:flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 26px;
+  }
+  .offer-top h1{ font-size: clamp(1.45rem, 3vw, 2.1rem); margin-bottom: 8px; max-width: 640px; }
+  .offer-location{
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    display:flex; align-items:center; gap:6px;
+    margin: 0;
+  }
+  .offer-location svg{ width:15px; height:15px; color: var(--blue); }
+  .offer-tags{ display:flex; gap:8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .offer-price-box{ text-align:right; flex-shrink:0; }
+  .offer-price{
+    font-family:'Space Grotesk',sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+  .offer-price-meta{ font-size: 0.82rem; color: var(--ink-soft); margin-top: 6px; }
+  @media (max-width: 680px){
+    .offer-price-box{ text-align:left; }
+  }
+
+  /* ---------- Galeria ---------- */
+  .gallery{ margin-bottom: 34px; }
+  .gallery-main{
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg,#3A4853,#196DAD);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display:flex; align-items:center; justify-content:center;
+    color: rgba(255,255,255,0.85);
+  }
+  .gallery-main img{ width:100%; height:100%; object-fit: cover; cursor: zoom-in; }
+  .gallery-main .placeholder-icon{ width: 16%; height:16%; }
+  .gallery-nav{
+    position:absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(26,33,39,0.55);
+    color: var(--white);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 1.3rem;
+    backdrop-filter: blur(4px);
+    transition: background .2s ease;
+  }
+  .gallery-nav:hover{ background: rgba(26,33,39,0.8); }
+  .gallery-prev{ left: 14px; }
+  .gallery-next{ right: 14px; }
+  .gallery-counter{
+    position:absolute; bottom: 14px; right: 14px;
+    background: rgba(26,33,39,0.62);
+    color: var(--white);
+    font-size: 0.78rem;
+    padding: 5px 11px;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+  .gallery-thumbs{
+    display:flex;
+    gap: 10px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+  .gallery-thumbs button{
+    flex: 0 0 auto;
+    width: 104px;
+    aspect-ratio: 4/3;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    background: none;
+    opacity: .72;
+    transition: opacity .2s ease, border-color .2s ease;
+  }
+  .gallery-thumbs button img{ width:100%; height:100%; object-fit: cover; }
+  .gallery-thumbs button:hover{ opacity: 1; }
+  .gallery-thumbs button.active{ border-color: var(--blue); opacity: 1; }
+
+  .lightbox{
+    position: fixed; inset: 0;
+    background: rgba(12,16,19,0.94);
+    display: none;
+    align-items:center; justify-content:center;
+    z-index: 200;
+    padding: 24px;
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox img{ max-width: 100%; max-height: 100%; object-fit: contain; }
+  .lightbox-close{
+    position:absolute; top: 18px; right: 18px;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(255,255,255,0.14); color: var(--white);
+    border:none; cursor:pointer; font-size: 1.2rem;
+  }
+  .lightbox .gallery-nav{ background: rgba(255,255,255,0.14); }
+  .lightbox .gallery-nav:hover{ background: rgba(255,255,255,0.28); }
+
+  /* ---------- Treść ---------- */
+  .offer-layout{
+    display:grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 40px;
+    align-items:start;
+  }
+  @media (max-width: 940px){
+    .offer-layout{ grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  .panel{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 560px){ .panel{ padding: 20px; } }
+  .panel h2{ font-size: 1.1rem; margin-bottom: 16px; }
+
+  .specs-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 680px){ .specs-grid{ grid-template-columns: repeat(2, 1fr); } }
+  .spec-item h4{
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin: 0 0 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .spec-item p{ margin:0; font-weight: 600; color: var(--ink); font-size: 1.02rem; }
+
+  .description p{ color: var(--ink-soft); margin: 0 0 14px; }
+  .description p:last-child{ margin-bottom: 0; }
+
+  .feature-tags{ display:flex; flex-wrap:wrap; gap: 8px; }
+  .feature-tag{
+    font-size: 0.82rem;
+    color: var(--navy);
+    background: var(--blue-pale);
+    padding: 7px 14px;
+    border-radius: 999px;
+  }
+
+  .details-table{ width:100%; border-collapse: collapse; font-size: 0.92rem; }
+  .details-table th, .details-table td{
+    text-align:left;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .details-table th{ color: var(--ink-soft); font-weight: 500; width: 46%; }
+  .details-table tr:last-child th, .details-table tr:last-child td{ border-bottom: none; }
+
+  /* ---------- Panel kontaktowy ---------- */
+  .contact-card{
+    background: var(--navy-deep);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 26px 24px;
+    position: sticky;
+    top: 92px;
+  }
+  .contact-card h2{ color: var(--white); font-size: 1.05rem; margin-bottom: 8px; }
+  .contact-card p{ color: rgba(255,255,255,0.7); font-size: 0.9rem; margin: 0 0 18px; }
+  .contact-card .btn{ width: 100%; margin-bottom: 10px; }
+  .contact-card .btn:last-child{ margin-bottom: 0; }
+  .contact-meta{
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.14);
+    font-size: 0.86rem;
+    color: rgba(255,255,255,0.7);
+  }
+  .contact-meta a{ color: var(--white); text-decoration: underline; }
+  @media (max-width: 940px){ .contact-card{ position: static; } }
+
+  .map-link{
+    display:inline-flex; align-items:center; gap: 8px;
+    font-size: 0.88rem; color: var(--blue); font-weight: 500; margin-top: 4px;
+  }
+  .map-link svg{ width: 15px; height: 15px; }
+
+  /* ---------- Podobne oferty ---------- */
+  .related{ margin-top: 56px; }
+  .related h2{ font-size: 1.3rem; margin-bottom: 22px; }
+  .related-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 940px){ .related-grid{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px){ .related-grid{ grid-template-columns: 1fr; } }
+  .mini-card{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .mini-card:hover{ transform: translateY(-3px); box-shadow: 0 12px 24px rgba(35,44,51,0.1); }
+  .mini-photo{
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg,#3A4853,#196DAD);
+    display:flex; align-items:center; justify-content:center;
+    color: rgba(255,255,255,0.8);
+  }
+  .mini-photo img{ width:100%; height:100%; object-fit: cover; }
+  .mini-photo .placeholder-icon{ width: 26%; height: 26%; }
+  .mini-body{ padding: 16px 18px 18px; }
+  .mini-body .mini-loc{ font-size: 0.78rem; color: var(--ink-soft); margin: 0 0 4px; }
+  .mini-body h3{ font-size: 0.98rem; margin-bottom: 10px; }
+  .mini-price{ font-family:'Space Grotesk',sans-serif; font-weight: 700; color: var(--navy); }
+
+  .loading-box, .error-box{ padding: 80px 0; text-align:center; color: var(--ink-soft); }
+  .error-box h1{ font-size: 1.6rem; margin-bottom: 12px; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <img src="logo-white.png" alt="Logo kancelarii Wycena" width="631" height="763">
+      <div class="brand-text">
+        <strong>Wycena</strong>
+        <span>Beata Adamkiewicz-Dudek</span>
+      </div>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="wycena.html">Wycena</a>
+      <a href="posrednictwo.html">Pośrednictwo</a>
+      <a href="nieruchomosci.html" class="active">Nieruchomości</a>
+      <a href="index.html#standardy">Standardy</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </div>
+  </div>
+</nav>
+
+<div class="offer-wrap">
+  <div class="container">
+    <p class="breadcrumb" style="color:var(--ink-soft);margin-bottom:20px">
+      <a href="index.html">Strona główna</a> /
+      <a href="nieruchomosci.html">Nieruchomości</a> /
+      <span id="crumbTitle">Oferta</span>
+    </p>
+
+    <div class="loading-box" id="loadingBox">
+      <div class="skeleton" style="height:28px;width:60%;margin-bottom:14px"></div>
+      <div class="skeleton" style="height:16px;width:30%;margin-bottom:26px"></div>
+      <div class="skeleton" style="aspect-ratio:16/10;width:100%"></div>
+    </div>
+
+    <div class="error-box" id="errorBox" hidden>
+      <h1 id="errorTitle">Nie znaleziono oferty</h1>
+      <p id="errorText">Oferta mogła zostać sprzedana lub wycofana z prezentacji.</p>
+      <a href="nieruchomosci.html" class="btn btn-primary" style="margin-top:22px">Zobacz aktualne oferty</a>
+    </div>
+
+    <main id="offerContent" hidden></main>
+
+    <section class="related" id="relatedSection" hidden>
+      <h2>Podobne oferty</h2>
+      <div class="related-grid" id="relatedGrid"></div>
+    </section>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Zamknij">&times;</button>
+  <button class="gallery-nav gallery-prev" id="lbPrev" aria-label="Poprzednie zdjęcie">&#8249;</button>
+  <img src="" alt="" id="lightboxImg">
+  <button class="gallery-nav gallery-next" id="lbNext" aria-label="Następne zdjęcie">&#8250;</button>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <a href="index.html" class="footer-brand">
+        <img src="logo-white.png" alt="Logo kancelarii Wycena" width="631" height="763">
+        <div>
+          <strong>Wycena — Beata Adamkiewicz-Dudek</strong>
+          <p>Rzeczoznawca majątkowy. Rzetelne wyceny nieruchomości od 12 lat.</p>
+        </div>
+      </a>
+      <div class="footer-contact" id="footerContact"></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Wycena Beata Adamkiewicz-Dudek. Wszelkie prawa zastrzeżone.</span>
+      <span>12 lat doświadczenia w wycenie nieruchomości</span>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json" id="offerSchema">{}</script>
+<script type="application/ld+json" id="breadcrumbSchema">{}</script>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script>
+/* ============================================================================
+   Podstrona pojedynczej oferty: oferta.html?slug=<slug>
+
+   Osobny adres dla każdej nieruchomości daje trzy rzeczy, których nie dawał
+   poprzedni modal: indeksowanie w Google, sensowne linki do wysłania klientowi
+   oraz pełnoekranową galerię na telefonie.
+
+   Meta tagi i dane strukturalne (schema.org RealEstateListing) są ustawiane
+   po wczytaniu danych — Googlebot wykonuje JavaScript, więc widzi je poprawnie.
+   ============================================================================ */
+(function () {
+  'use strict';
+
+  const API = window.WycenaAPI;
+  const esc = API.esc;
+  const CFG = window.WYCENA_CONFIG || {};
+
+  const loadingBox = document.getElementById('loadingBox');
+  const errorBox = document.getElementById('errorBox');
+  const content = document.getElementById('offerContent');
+
+  const ICONS = {
+    building: '<svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 21V9l5-4 5 4v12"/><path d="M14 21V13h6v8"/><path d="M7 21v-4h4v4"/><path d="M8 8h1M8 11h1M8 14h1"/></svg>',
+    pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+    map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3L3 5v16l6-2 6 2 6-2V3l-6 2-6-2z"/><path d="M9 3v16M15 5v16"/></svg>'
+  };
+
+  let property = null;
+  let images = [];
+  let currentIndex = 0;
+
+  /* ------------------------------------------------------------------ meta */
+  function setMeta(p) {
+    const titleBase = p.metaTitle || p.title;
+    document.title = titleBase + ' | Wycena — Beata Adamkiewicz-Dudek';
+
+    const description = p.metaDescription ||
+      (p.propertyType + ' ' + (p.transactionType === 'Wynajem' ? 'do wynajęcia' : 'na sprzedaż') +
+       (p.location ? ' — ' + p.location : '') +
+       (p.area ? ', ' + API.formatNumber(p.area, true) + ' m²' : '') + '. ' +
+       API.formatPrice(p) + '.');
+
+    const url = API.absoluteUrl(API.propertyUrl(p));
+    const image = images.length ? images[0].url : API.absoluteUrl('logo-white.png');
+
+    document.getElementById('metaDescription').setAttribute('content', description);
+    document.getElementById('canonicalLink').href = url;
+    document.getElementById('ogTitle').setAttribute('content', titleBase);
+    document.getElementById('ogDescription').setAttribute('content', description);
+    document.getElementById('ogImage').setAttribute('content', image);
+    document.getElementById('ogUrl').setAttribute('content', url);
+    document.getElementById('crumbTitle').textContent = p.title;
+
+    /* --- schema.org: oferta nieruchomości --- */
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'RealEstateListing',
+      name: p.title,
+      url: url,
+      description: (p.description || description).slice(0, 900),
+      datePosted: p.createdAt,
+      image: images.map(function (i) { return i.url; }).slice(0, 12),
+      provider: {
+        '@type': 'RealEstateAgent',
+        name: (CFG.business && CFG.business.name) || 'Wycena',
+        telephone: (CFG.business && CFG.business.phone) || undefined,
+        email: (CFG.business && CFG.business.email) || undefined
+      }
+    };
+    if (p.price != null && !p.priceHidden) {
+      schema.offers = {
+        '@type': 'Offer',
+        price: p.price,
+        priceCurrency: 'PLN',
+        availability: p.status === 'Dostępna'
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+        url: url
+      };
+    }
+    if (p.city || p.street) {
+      schema.address = {
+        '@type': 'PostalAddress',
+        streetAddress: p.street || undefined,
+        addressLocality: p.city || undefined,
+        addressRegion: p.voivodeship || undefined,
+        addressCountry: 'PL'
+      };
+    }
+    if (p.lat && p.lng) {
+      schema.geo = { '@type': 'GeoCoordinates', latitude: p.lat, longitude: p.lng };
+    }
+    if (p.area != null) {
+      schema.floorSize = { '@type': 'QuantitativeValue', value: p.area, unitCode: 'MTK' };
+    }
+    if (p.rooms != null) schema.numberOfRooms = p.rooms;
+    document.getElementById('offerSchema').textContent = JSON.stringify(schema);
+
+    /* --- schema.org: ścieżka nawigacji --- */
+    document.getElementById('breadcrumbSchema').textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Strona główna', item: API.absoluteUrl('index.html') },
+        { '@type': 'ListItem', position: 2, name: 'Nieruchomości', item: API.absoluteUrl('nieruchomosci.html') },
+        { '@type': 'ListItem', position: 3, name: p.title, item: url }
+      ]
+    });
+  }
+
+  /* --------------------------------------------------------------- galeria */
+  function galleryHTML() {
+    if (!images.length) {
+      return '<div class="gallery"><div class="gallery-main">' + ICONS.building + '</div></div>';
+    }
+    const first = images[0];
+    const nav = images.length > 1
+      ? '<button class="gallery-nav gallery-prev" id="galPrev" aria-label="Poprzednie zdjęcie">&#8249;</button>' +
+        '<button class="gallery-nav gallery-next" id="galNext" aria-label="Następne zdjęcie">&#8250;</button>' +
+        '<span class="gallery-counter" id="galCounter">1 / ' + images.length + '</span>'
+      : '';
+    const thumbs = images.length > 1
+      ? '<div class="gallery-thumbs" id="galThumbs">' + images.map(function (img, i) {
+          return '<button type="button" class="' + (i === 0 ? 'active' : '') + '" data-index="' + i +
+            '" aria-label="Zdjęcie ' + (i + 1) + '">' +
+            '<img src="' + esc(img.thumbUrl) + '" alt="" loading="lazy" decoding="async"></button>';
+        }).join('') + '</div>'
+      : '';
+
+    return '<div class="gallery">' +
+      '<div class="gallery-main">' +
+        '<img id="galMain" src="' + esc(first.url) + '" alt="' + esc(first.alt) +
+          '" fetchpriority="high" decoding="async">' + nav +
+      '</div>' + thumbs +
+    '</div>';
+  }
+
+  function showImage(index) {
+    if (!images.length) return;
+    currentIndex = (index + images.length) % images.length;
+    const img = images[currentIndex];
+    const main = document.getElementById('galMain');
+    if (main) {
+      main.src = img.url;
+      main.alt = img.alt;
+    }
+    const counter = document.getElementById('galCounter');
+    if (counter) counter.textContent = (currentIndex + 1) + ' / ' + images.length;
+    const thumbs = document.querySelectorAll('#galThumbs button');
+    thumbs.forEach(function (btn, i) { btn.classList.toggle('active', i === currentIndex); });
+    const lbImg = document.getElementById('lightboxImg');
+    if (lightbox.classList.contains('open')) {
+      lbImg.src = img.url;
+      lbImg.alt = img.alt;
+    }
+  }
+
+  const lightbox = document.getElementById('lightbox');
+  function openLightbox() {
+    if (!images.length) return;
+    const lbImg = document.getElementById('lightboxImg');
+    lbImg.src = images[currentIndex].url;
+    lbImg.alt = images[currentIndex].alt;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lightboxClose').focus();
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function bindGallery() {
+    const prev = document.getElementById('galPrev');
+    const next = document.getElementById('galNext');
+    if (prev) prev.addEventListener('click', function () { showImage(currentIndex - 1); });
+    if (next) next.addEventListener('click', function () { showImage(currentIndex + 1); });
+
+    const thumbsBox = document.getElementById('galThumbs');
+    if (thumbsBox) {
+      thumbsBox.addEventListener('click', function (e) {
+        const btn = e.target.closest('button[data-index]');
+        if (btn) showImage(Number(btn.getAttribute('data-index')));
+      });
+    }
+
+    const main = document.getElementById('galMain');
+    if (main) main.addEventListener('click', openLightbox);
+
+    /* --- przesuwanie palcem na telefonie --- */
+    let startX = null;
+    const galleryMain = document.querySelector('.gallery-main');
+    if (galleryMain) {
+      galleryMain.addEventListener('touchstart', function (e) {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+      galleryMain.addEventListener('touchend', function (e) {
+        if (startX === null) return;
+        const delta = e.changedTouches[0].clientX - startX;
+        if (Math.abs(delta) > 45) showImage(currentIndex + (delta < 0 ? 1 : -1));
+        startX = null;
+      });
+    }
+  }
+
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', function () { showImage(currentIndex - 1); });
+  document.getElementById('lbNext').addEventListener('click', function () { showImage(currentIndex + 1); });
+  lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
+    if (!images.length) return;
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+  });
+
+  /* ---------------------------------------------------------------- widok */
+  function specItem(label, value) {
+    if (value === null || value === undefined || value === '') return '';
+    return '<div class="spec-item"><h4>' + esc(label) + '</h4><p>' + esc(value) + '</p></div>';
+  }
+
+  function render(p) {
+    const priceMeta = [];
+    if (p.pricePerM) priceMeta.push(API.formatNumber(Math.round(p.pricePerM)) + ' zł/m²');
+    if (p.rent) priceMeta.push('czynsz ' + API.formatNumber(Math.round(p.rent)) + ' zł');
+
+    const specs = [
+      specItem(API.areaLabel(p), p.area != null ? API.formatNumber(p.area, true) + ' m²' : null),
+      specItem('Pokoje', p.rooms),
+      specItem('Piętro', p.floor),
+      specItem('Rok budowy', p.year),
+      specItem('Powierzchnia działki', p.plotArea != null ? API.formatNumber(p.plotArea) + ' m²' : null),
+      specItem('Łazienki', p.bathrooms),
+      specItem('Rynek', p.market),
+      specItem('Stan', p.condition)
+    ].filter(Boolean).join('');
+
+    const descriptionHTML = (p.description || '')
+      .split(/\n{2,}/)
+      .map(function (para) { return para.trim(); })
+      .filter(Boolean)
+      .map(function (para) { return '<p>' + esc(para).replace(/\n/g, '<br>') + '</p>'; })
+      .join('');
+
+    const featuresHTML = (p.features || []).length
+      ? '<div class="panel"><h2>Udogodnienia</h2><div class="feature-tags">' +
+        p.features.map(function (f) { return '<span class="feature-tag">' + esc(f) + '</span>'; }).join('') +
+        '</div></div>'
+      : '';
+
+    const detailRows = (p.details || [])
+      .filter(function (d) { return d && d.label && d.value; })
+      .map(function (d) {
+        return '<tr><th>' + esc(d.label) + '</th><td>' + esc(d.value) + '</td></tr>';
+      }).join('');
+    const detailsHTML = detailRows
+      ? '<div class="panel"><h2>Szczegóły</h2><table class="details-table"><tbody>' +
+        detailRows + '</tbody></table></div>'
+      : '';
+
+    const mapHTML = (p.lat && p.lng)
+      ? '<a class="map-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=' +
+        encodeURIComponent(p.lat + ',' + p.lng) + '">' + ICONS.map + 'Pokaż na mapie</a>'
+      : '';
+
+    const business = CFG.business || {};
+    const statusBadge = p.status !== 'Dostępna'
+      ? '<span class="badge status">' + esc(p.status) + '</span>'
+      : '';
+
+    content.innerHTML =
+      '<div class="offer-top">' +
+        '<div>' +
+          '<div class="offer-tags">' +
+            '<span class="badge ' + (p.transactionType === 'Sprzedaż' ? 'sale' : 'rent') + '">' +
+              esc(p.transactionType) + '</span>' +
+            '<span class="badge" style="background:var(--blue-pale)">' + esc(p.propertyType) + '</span>' +
+            statusBadge +
+          '</div>' +
+          '<h1>' + esc(p.title) + '</h1>' +
+          '<p class="offer-location">' + ICONS.pin + esc(p.location || '—') + '</p>' +
+          mapHTML +
+        '</div>' +
+        '<div class="offer-price-box">' +
+          '<div class="offer-price">' + esc(API.formatPrice(p)) + '</div>' +
+          (priceMeta.length ? '<div class="offer-price-meta">' + esc(priceMeta.join(' · ')) + '</div>' : '') +
+        '</div>' +
+      '</div>' +
+
+      galleryHTML() +
+
+      '<div class="offer-layout">' +
+        '<div>' +
+          (specs ? '<div class="panel"><h2>Podstawowe informacje</h2><div class="specs-grid">' + specs + '</div></div>' : '') +
+          (descriptionHTML ? '<div class="panel"><h2>Opis</h2><div class="description">' + descriptionHTML + '</div></div>' : '') +
+          featuresHTML +
+          detailsHTML +
+        '</div>' +
+
+        '<aside>' +
+          '<div class="contact-card">' +
+            '<h2>Zainteresowała Cię ta oferta?</h2>' +
+            '<p>Chętnie odpowiemy na pytania i umówimy prezentację nieruchomości.</p>' +
+            '<a class="btn btn-primary" href="tel:' + esc(business.phoneHref || '') + '">Zadzwoń</a>' +
+            '<a class="btn btn-outline-white" href="' + esc(API.contactMailto(p)) + '">Napisz wiadomość</a>' +
+            '<div class="contact-meta">' +
+              esc(business.shortName || '') + '<br>' +
+              '<a href="tel:' + esc(business.phoneHref || '') + '">' + esc(business.phone || '') + '</a><br>' +
+              '<a href="mailto:' + esc(business.email || '') + '">' + esc(business.email || '') + '</a>' +
+            '</div>' +
+          '</div>' +
+        '</aside>' +
+      '</div>';
+
+    bindGallery();
+  }
+
+  /* ------------------------------------------------------- podobne oferty */
+  function renderRelated(all, p) {
+    const others = all.filter(function (o) { return o.slug !== p.slug; });
+    const score = function (o) {
+      let s = 0;
+      if (o.city && o.city === p.city) s += 2;
+      if (o.propertyType === p.propertyType) s += 2;
+      if (o.transactionType === p.transactionType) s += 1;
+      return s;
+    };
+    const picked = others.sort(function (a, b) { return score(b) - score(a); }).slice(0, 3);
+    if (!picked.length) return;
+
+    document.getElementById('relatedGrid').innerHTML = picked.map(function (o) {
+      const img = o.images[0];
+      return '<a class="mini-card" href="' + esc(API.propertyUrl(o)) + '">' +
+        '<div class="mini-photo">' +
+          (img ? '<img src="' + esc(img.thumbUrl) + '" alt="' + esc(img.alt) + '" loading="lazy" decoding="async">'
+               : ICONS.building) +
+        '</div>' +
+        '<div class="mini-body">' +
+          '<p class="mini-loc">' + esc(o.location || '') + '</p>' +
+          '<h3>' + esc(o.title) + '</h3>' +
+          '<span class="mini-price">' + esc(API.formatPrice(o)) + '</span>' +
+        '</div></a>';
+    }).join('');
+    document.getElementById('relatedSection').hidden = false;
+  }
+
+  /* ---------------------------------------------------------------- start */
+  function showError(title, text) {
+    loadingBox.hidden = true;
+    errorBox.hidden = false;
+    document.getElementById('errorTitle').textContent = title;
+    document.getElementById('errorText').textContent = text;
+    document.querySelector('meta[name="robots"]').setAttribute('content', 'noindex, follow');
+  }
+
+  async function init() {
+    const slug = new URLSearchParams(location.search).get('slug');
+    if (!slug) {
+      showError('Brak wskazanej oferty', 'Adres strony nie zawiera identyfikatora oferty.');
+      return;
+    }
+
+    try {
+      property = await API.loadProperty(slug);
+    } catch (err) {
+      showError('Nie udało się wczytać oferty', err.message || 'Spróbuj ponownie za chwilę.');
+      return;
+    }
+
+    if (!property) {
+      showError('Nie znaleziono oferty',
+        'Oferta mogła zostać sprzedana, wynajęta lub wycofana z prezentacji.');
+      return;
+    }
+
+    images = property.images;
+    loadingBox.hidden = true;
+    content.hidden = false;
+    render(property);
+    setMeta(property);
+
+    /* Podobne oferty wczytujemy dopiero po wyrenderowaniu głównej treści. */
+    try {
+      const all = await API.loadProperties();
+      renderRelated(all, property);
+    } catch (err) {
+      console.warn('Nie udało się wczytać podobnych ofert', err);
+    }
+  }
+
+  /* --------------------------------------------- nawigacja i stopka ------ */
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  (function renderContact() {
+    const b = CFG.business || {};
+    document.getElementById('footerContact').innerHTML =
+      '<div><h4>Telefon</h4><p><a href="tel:' + esc(b.phoneHref || '') + '">' + esc(b.phone || '') + '</a></p></div>' +
+      '<div><h4>E-mail</h4><p><a href="mailto:' + esc(b.email || '') + '">' + esc(b.email || '') + '</a></p></div>' +
+      '<div><h4>Obszar działania</h4><p>' + esc(b.area || '') + '</p></div>';
+  })();
+
+  init();
+})();
+</script>
+
+</body>
+</html>

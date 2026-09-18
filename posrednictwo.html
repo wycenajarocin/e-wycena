@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pośrednictwo w sprzedaży nieruchomości | Wycena — Beata Adamkiewicz-Dudek</title>
+<meta name="description" content="Sprzedaj nieruchomość z doświadczonym pośrednikiem: profesjonalna fotografia, filmy z drona, rolki, social media i pełne wsparcie w formalnościach. Jarocin i okoliczne powiaty.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.e-wycena.com.pl/posrednictwo.html" id="canonicalLink">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wycena — Beata Adamkiewicz-Dudek">
+<meta property="og:title" content="Pośrednictwo w sprzedaży nieruchomości">
+<meta property="og:description" content="Doświadczony pośrednik: profesjonalny marketing nieruchomości i pełne wsparcie formalne przy sprzedaży.">
+<meta property="og:image" content="posrednictwo.jpg" id="ogImage">
+<meta property="og:locale" content="pl_PL">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="logo-white.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css?v=2">
+<style>
+  /* ---------- Hero z tłem zdjęciowym ---------- */
+  .posr-hero{
+    position: relative;
+    min-height: 62vh;
+    display:flex;
+    align-items:flex-end;
+    padding: 170px 0 64px;
+    color: var(--white);
+    background-image:
+      linear-gradient(180deg, rgba(26,33,39,0.35) 0%, rgba(26,33,39,0.72) 55%, var(--navy-deepest) 100%),
+      url('posrednictwo.jpg');
+    background-size: cover;
+    background-position: center 30%;
+  }
+  .posr-hero .breadcrumb{ color: rgba(255,255,255,0.6); }
+  .posr-hero .breadcrumb a:hover{ color: var(--white); }
+  .posr-hero h1{
+    font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+    max-width: 680px;
+    margin-bottom: 18px;
+  }
+  .posr-hero p.lead{
+    max-width: 560px;
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.86);
+    margin-bottom: 32px;
+  }
+  .posr-hero .hero-ctas{ display:flex; gap:16px; flex-wrap:wrap; }
+
+  /* ---------- Pasek doświadczenia ---------- */
+  .experience-strip{
+    background: var(--navy-deep);
+    color: var(--white);
+    padding: 46px 0;
+  }
+  .experience-strip .container{
+    display:flex;
+    align-items:center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .experience-strip .stat-number{
+    font-family:'Space Grotesk',sans-serif;
+    font-size: clamp(2.2rem, 4.4vw, 3rem);
+    font-weight: 700;
+    color: var(--blue-light);
+    line-height:1;
+    white-space: nowrap;
+  }
+  .experience-strip p{
+    margin:0;
+    color: rgba(255,255,255,0.8);
+    max-width: 640px;
+    font-size: 1rem;
+  }
+
+  /* ---------- Sekcja korzyści ---------- */
+  .benefits-section{ padding: 96px 0 100px; }
+  .benefits-intro{ max-width: 640px; margin-bottom: 64px; }
+  .benefits-intro h2{ font-size: clamp(1.7rem, 3vw, 2.3rem); margin-bottom: 16px; }
+  .benefits-intro p{ color: var(--ink-soft); font-size: 1.03rem; margin:0; }
+
+  .benefit-row{
+    display:flex;
+    align-items:center;
+    gap: 56px;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .benefit-row:first-of-type{ padding-top: 0; }
+  .benefit-row:last-of-type{ border-bottom: none; }
+  .benefit-row:nth-of-type(even){ flex-direction: row-reverse; }
+  .benefit-media{
+    flex: 0 0 42%;
+    aspect-ratio: 4/3;
+    border-radius: var(--radius);
+    overflow:hidden;
+    background: var(--navy-deep);
+    box-shadow: 0 20px 44px rgba(35,44,51,0.16);
+  }
+  .benefit-media img{
+    width:100%; height:100%;
+    object-fit: cover;
+  }
+  .benefit-text{ flex: 1 1 auto; }
+  .benefit-index{
+    font-family:'Space Grotesk',sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display:block;
+  }
+  .benefit-text h3{ font-size: 1.35rem; margin-bottom: 12px; color: var(--ink); }
+  .benefit-text p{ color: var(--ink-soft); font-size: 1rem; margin:0; max-width: 480px; }
+
+  @media (max-width: 860px){
+    .benefit-row, .benefit-row:nth-of-type(even){
+      flex-direction: column;
+      align-items: stretch;
+      gap: 24px;
+    }
+    .benefit-media{ flex: none; aspect-ratio: 16/10; }
+    .benefit-text p{ max-width: none; }
+  }
+
+  /* ---------- Sekcja O mnie ---------- */
+  .section-about{
+    padding: 0 0 100px;
+    background: var(--paper);
+  }
+  .about-grid{
+    display:grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 56px;
+    align-items:center;
+  }
+  @media (max-width: 860px){
+    .about-grid{ grid-template-columns: 1fr; gap: 36px; }
+  }
+  .about-media{
+    aspect-ratio: 3/4;
+    border-radius: var(--radius);
+    overflow:hidden;
+    box-shadow: 0 20px 44px rgba(35,44,51,0.16);
+  }
+  .about-media img{ width:100%; height:100%; object-fit:cover; }
+  .about-eyebrow{
+    font-size:0.82rem;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color: var(--blue);
+    margin-bottom:14px;
+    display:block;
+  }
+  .about-text h2{ font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom:18px; color: var(--ink); }
+  .about-text .about-quote{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:1.1rem;
+    font-style:italic;
+    color: var(--ink);
+    border-left: 3px solid var(--blue);
+    padding-left:18px;
+    margin: 0 0 26px;
+  }
+  .about-text p{ color: var(--ink-soft); font-size:1rem; margin:0 0 16px; }
+  .about-text p:last-of-type{ margin-bottom: 28px; }
+  .google-btn{ display:inline-flex; align-items:center; gap:10px; }
+  .google-btn svg{ width:18px; height:18px; }
+
+  /* ---------- CTA środkowe ---------- */
+  .cta-band{
+    background: var(--navy-deep);
+    color: var(--white);
+    padding: 80px 0;
+    text-align:center;
+  }
+  .cta-band h2{ font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 14px; }
+  .cta-band p{ color: rgba(255,255,255,0.7); max-width: 520px; margin: 0 auto 30px; }
+  .cta-band .hero-ctas{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+  /* ---------- Formularz kontaktowy ---------- */
+  .contact-section{ padding: 100px 0; }
+  .contact-card{
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 48px;
+    box-shadow: 0 30px 60px rgba(35,44,51,0.08);
+  }
+  .contact-card h2{ font-size: clamp(1.5rem, 2.6vw, 1.9rem); margin-bottom: 12px; text-align:center; }
+  .contact-card > p{ color: var(--ink-soft); text-align:center; max-width: 460px; margin: 0 auto 36px; }
+  .form-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-grid .full{ grid-column: 1 / -1; }
+  .form-field{ display:flex; flex-direction:column; gap:8px; }
+  .form-field label{ font-size: 0.86rem; font-weight:600; color: var(--ink); }
+  .form-field input, .form-field select, .form-field textarea{
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-family:'Inter',sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--paper);
+    outline:none;
+    transition: border-color .18s ease;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus{ border-color: var(--blue); }
+  .form-field textarea{ resize: vertical; min-height: 110px; font-family: inherit; }
+  .form-submit-row{ margin-top: 30px; text-align:center; }
+  .form-submit-row .btn{ width: 100%; max-width: 320px; }
+  #formNotice{ margin-top: 22px; display:none; }
+  @media (max-width: 560px){
+    .contact-card{ padding: 32px 22px; }
+    .form-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <img src="logo-white.png" alt="Logo kancelarii Wycena" width="631" height="763">
+      <div class="brand-text">
+        <strong>Wycena</strong>
+        <span>Beata Adamkiewicz-Dudek</span>
+      </div>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="wycena.html">Wycena</a>
+      <a href="posrednictwo.html" class="active">Pośrednictwo</a>
+      <a href="nieruchomosci.html">Nieruchomości</a>
+      <a href="index.html#standardy">Standardy</a>
+      <a href="index.html#kontakt">Kontakt</a>
+    </div>
+  </div>
+</nav>
+
+<header class="posr-hero">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Strona główna</a> / Pośrednictwo</p>
+    <h1>Sprzedaj nieruchomość z doświadczonym pośrednikiem</h1>
+    <p class="lead">Kompleksowo prowadzimy sprzedaż mieszkań, domów i działek — od przygotowania oferty i marketingu, przez negocjacje, aż po bezpieczne domknięcie transakcji u notariusza.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#formularz">Chcę sprzedać nieruchomość</a>
+      <a class="btn btn-secondary" href="#" id="ctaPhone">Zadzwoń do nas</a>
+    </div>
+  </div>
+</header>
+
+<section class="experience-strip">
+  <div class="container">
+    <div class="stat-number">Dziesiątki</div>
+    <p>sprzedanych nieruchomości na terenie Jarocina i okolicznych powiatów. Dzięki wieloletniemu doświadczeniu wiemy, co realnie przyspiesza sprzedaż i pomaga uzyskać najlepszą możliwą cenę.</p>
+  </div>
+</section>
+
+<section class="benefits-section">
+  <div class="container">
+    <div class="benefits-intro">
+      <h2>Co zyskujesz, sprzedając z nami nieruchomość?</h2>
+      <p>Sprzedaż nieruchomości to coś więcej niż samo ogłoszenie. Poniżej znajdziesz narzędzia i działania, które wykorzystujemy, aby Twoja oferta dotarła do właściwych osób i sprzedała się szybciej — w dobrej cenie.</p>
+    </div>
+
+    <div class="benefit-row">
+      <div class="benefit-media"><img src="foto.jpg" alt="Profesjonalna fotografia wnętrz nieruchomości" loading="lazy"></div>
+      <div class="benefit-text">
+        <span class="benefit-index">01 · Fotografia</span>
+        <h3>Profesjonalna fotografia wnętrz</h3>
+        <p>Zanim ogłoszenie trafi do sieci, przygotowujemy wnętrza i wykonujemy staranną sesję zdjęciową. Dobrze skomponowane, jasne zdjęcia przyciągają uwagę kupujących już na pierwszy rzut oka i realnie zwiększają liczbę zapytań o ofertę.</p>
+      </div>
+    </div>
+
+    <div class="benefit-row">
+      <div class="benefit-media"><img src="dron.jpg" alt="Zdjęcia i filmy z drona nieruchomości" loading="lazy"></div>
+      <div class="benefit-text">
+        <span class="benefit-index">02 · Dron</span>
+        <h3>Zdjęcia i filmy z drona</h3>
+        <p>Dysponujemy własnym dronem, dzięki któremu domom i działkom nadajemy szerszy kontekst — pokazujemy okolicę, dojazd i otoczenie z lotu ptaka. To rozwiązanie doskonale sprawdza się, gdy o atrakcyjności nieruchomości decyduje jej położenie.</p>
+      </div>
+    </div>
+
+    <div class="benefit-row">
+      <div class="benefit-media"><img src="rolki.png" alt="Rolki wideo prezentujące nieruchomość" loading="lazy"></div>
+      <div class="benefit-text">
+        <span class="benefit-index">03 · Wideo</span>
+        <h3>Angażujące rolki wideo</h3>
+        <p>Nagrywamy dynamiczne, krótkie materiały wideo, które w atrakcyjnej formie prezentują nieruchomość i przyciągają uwagę tam, gdzie dziś najczęściej szuka się ofert — w mediach społecznościowych.</p>
+      </div>
+    </div>
+
+    <div class="benefit-row">
+      <div class="benefit-media"><img src="baner.jpg" alt="Baner reklamowy na sprzedawanej nieruchomości" loading="lazy"></div>
+      <div class="benefit-text">
+        <span class="benefit-index">04 · Baner</span>
+        <h3>Baner na nieruchomości</h3>
+        <p>Każdą ofertę oznaczamy własnym banerem umieszczonym bezpośrednio na nieruchomości. To dodatkowy, skuteczny kanał dotarcia do lokalnych kupujących, którzy szukają ofert, poruszając się po okolicy.</p>
+      </div>
+    </div>
+
+    <div class="benefit-row">
+      <div class="benefit-media"><img src="socialmedia.png" alt="Promocja nieruchomości w mediach społecznościowych" loading="lazy"></div>
+      <div class="benefit-text">
+        <span class="benefit-index">05 · Social media</span>
+        <h3>Social media i kampanie reklamowe</h3>
+        <p>Prowadzimy profil z kilkoma tysiącami obserwujących, na którym regularnie publikujemy posty, rolki i filmy. Wybrane oferty dodatkowo promujemy w płatnych kampaniach Meta Ads, docierając do osób realnie zainteresowanych zakupem.</p>
+      </div>
+    </div>
+
+    <div class="benefit-row">
+      <div class="benefit-media"><img src="formalnosci.jpg" alt="Wsparcie w formalnościach przy sprzedaży nieruchomości" loading="lazy"></div>
+      <div class="benefit-text">
+        <span class="benefit-index">06 · Formalności</span>
+        <h3>Wsparcie w formalnościach</h3>
+        <p>Prowadzimy Cię przez cały proces transakcji — pomagamy skompletować dokumenty, weryfikujemy stan prawny nieruchomości i wspieramy na etapie aktu notarialnego. Dbamy o to, aby sprzedaż przebiegła sprawnie i bezpiecznie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-about" id="o-mnie">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-media"><img src="BeataAdamkiewiczDudek.jpg" alt="Beata Adamkiewicz-Dudek"></div>
+      <div class="about-text">
+        <span class="about-eyebrow">O mnie</span>
+        <h2>Beata Adamkiewicz-Dudek</h2>
+        <p class="about-quote">„Nieruchomości to dla mnie coś więcej niż zawód – to pasja, którą każdego dnia przekładam na profesjonalną i rzetelną pracę z klientami.”</p>
+        <p>Nazywam się Beata Adamkiewicz-Dudek. Z wykształcenia jestem magistrem prawa, jednak swoją drogę zawodową od lat z powodzeniem łączę z rynkiem nieruchomości, który stał się nie tylko moją specjalizacją, ale przede wszystkim prawdziwą pasją.</p>
+        <p>Zajmuję się wyceną nieruchomości oraz pośrednictwem w obrocie nieruchomościami. Do każdej współpracy podchodzę indywidualnie, z dużą starannością i zaangażowaniem. Wiedza prawnicza, wieloletnie doświadczenie oraz znajomość rynku pozwalają mi spojrzeć na nieruchomość z wielu perspektyw i zapewnić klientom rzetelne, przemyślane wsparcie na każdym etapie współpracy.</p>
+        <p>Największą wartością mojej pracy są dla mnie zaufanie i zadowolenie klientów. Potwierdzają je liczne pozytywne opinie, które można znaleźć na moim profilu Google.</p>
+        <p>Prywatnie jestem miłośniczką aktywnego stylu życia. Interesuję się sportem, szczególnie bieganiem, a także uwielbiam podróże, które pozwalają mi odkrywać nowe miejsca i czerpać inspirację z otaczającego świata.</p>
+        <a class="btn btn-primary google-btn" href="https://g.page/r/CRISj9t2xrHaEBM/review" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+          Zobacz opinie w Google
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container">
+    <h2>Gotowy, aby sprzedać swoją nieruchomość?</h2>
+    <p>Umów się na bezpłatną, niezobowiązującą konsultację. Podpowiemy, jak przygotować nieruchomość do sprzedaży i jakiej ceny realnie się spodziewać.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#formularz">Chcę sprzedać nieruchomość</a>
+      <a class="btn btn-secondary" href="nieruchomosci.html">Zobacz aktualne oferty</a>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="formularz">
+  <div class="container">
+    <div class="contact-card">
+      <h2>Umów bezpłatną wycenę i konsultację</h2>
+      <p>Wypełnij formularz, a skontaktujemy się z Tobą, aby omówić szczegóły sprzedaży Twojej nieruchomości.</p>
+
+      <form id="contactForm">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="cf-name">Imię i nazwisko</label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="Jan Kowalski" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-phone">Telefon</label>
+            <input type="tel" id="cf-phone" name="phone" autocomplete="tel" placeholder="+48 000 000 000" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-email">E-mail</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" placeholder="jan@przyklad.pl" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-type">Typ nieruchomości</label>
+            <select id="cf-type" name="type">
+              <option value="">Wybierz typ</option>
+              <option value="mieszkanie">Mieszkanie</option>
+              <option value="dom">Dom</option>
+              <option value="dzialka">Działka</option>
+              <option value="lokal">Lokal użytkowy</option>
+              <option value="inne">Inne</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label for="cf-message">Wiadomość</label>
+            <textarea id="cf-message" name="message" placeholder="Kilka słów o nieruchomości, którą chcesz sprzedać…"></textarea>
+          </div>
+        </div>
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="form-submit-row">
+          <button type="submit" class="btn btn-primary" id="cf-submit">Wyślij zapytanie</button>
+        </div>
+        <div class="notice" id="formNotice" style="display:none"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <a href="index.html" class="footer-brand">
+        <img src="logo-white.png" alt="Logo kancelarii Wycena" width="631" height="763">
+        <div>
+          <strong>Wycena — Beata Adamkiewicz-Dudek</strong>
+          <p>Rzeczoznawca majątkowy i pośrednik. Rzetelna sprzedaż nieruchomości od lat.</p>
+        </div>
+      </a>
+      <div class="footer-contact" id="footerContact"></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Wycena Beata Adamkiewicz-Dudek. Wszelkie prawa zastrzeżone.</span>
+      <span>Dziesiątki sprzedanych nieruchomości w Jarocinie i okolicy</span>
+    </div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const API = window.WycenaAPI || {};
+  const esc = API.esc || function (s) { return s == null ? '' : String(s); };
+  const CFG = window.WYCENA_CONFIG || {};
+
+  /* ---------------- menu mobilne ---------------- */
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  /* ---------------- stopka + kontakt z config.js ---------------- */
+  function renderContact() {
+    const b = CFG.business || {};
+    document.getElementById('footerContact').innerHTML =
+      '<div><h4>Telefon</h4><p><a href="tel:' + esc(b.phoneHref || '') + '">' + esc(b.phone || '') + '</a></p></div>' +
+      '<div><h4>E-mail</h4><p><a href="mailto:' + esc(b.email || '') + '">' + esc(b.email || '') + '</a></p></div>' +
+      '<div><h4>Obszar działania</h4><p>' + esc(b.area || '') + '</p></div>';
+    document.getElementById('ctaPhone').href = 'tel:' + (b.phoneHref || '');
+
+    if (CFG.siteUrl && CFG.siteUrl.indexOf('TWOJADOMENA') === -1) {
+      const base = String(CFG.siteUrl).replace(/\/$/, '');
+      document.getElementById('canonicalLink').href = base + '/posrednictwo.html';
+      document.getElementById('ogImage').setAttribute('content', base + '/posrednictwo.jpg');
+    }
+  }
+  renderContact();
+
+  /* ---------------- formularz kontaktowy ----------------
+     Wysyłka realizowana przez FormSubmit.co (bez własnego backendu),
+     prosto na adres z config.js (business.email). Przy pierwszej
+     prawdziwej wiadomości FormSubmit wyśle na ten adres jednorazowy
+     e-mail z prośbą o aktywację formularza (trzeba kliknąć link). */
+  const form = document.getElementById('contactForm');
+  const notice = document.getElementById('formNotice');
+  const submitBtn = document.getElementById('cf-submit');
+
+  function showNotice(kind, text) {
+    notice.className = 'notice notice-' + kind;
+    notice.textContent = text;
+    notice.style.display = 'block';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = (CFG.business && CFG.business.email) || '';
+    if (!email) {
+      showNotice('error', 'Brak skonfigurowanego adresu e-mail odbiorcy. Skontaktuj się z nami telefonicznie.');
+      return;
+    }
+
+    const fd = new FormData(form);
+    fd.append('_subject', 'Nowe zapytanie ze strony — Pośrednictwo');
+    fd.append('_template', 'table');
+    fd.append('_captcha', 'false');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wysyłanie…';
+    notice.style.display = 'none';
+
+    fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: fd,
+    })
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (result) {
+        if (!result.ok) { throw new Error('send failed'); }
+        showNotice('ok', 'Dziękujemy! Wiadomość została wysłana — odezwiemy się najszybciej, jak to możliwe.');
+        form.reset();
+      })
+      .catch(function () {
+        const phone = (CFG.business && CFG.business.phone) || '';
+        showNotice('error', 'Nie udało się wysłać wiadomości. Spróbuj ponownie lub zadzwoń do nas' + (phone ? ': ' + phone : '.'));
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Wyślij zapytanie';
+      });
+  });
+})();
+</script>
+</body>
+</html>

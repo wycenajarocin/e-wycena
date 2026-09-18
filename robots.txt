@@ -1,0 +1,11 @@
+# ============================================================================
+#  robots.txt
+# ============================================================================
+
+User-agent: *
+Allow: /
+
+# Panel administracyjny nie ma być indeksowany.
+Disallow: /admin.html
+
+Sitemap: https://www.e-wycena.com.pl/sitemap.xml

@@ -1,0 +1,23 @@
+# ============================================================================
+#  Konfiguracja projektu dla Supabase CLI.
+#  Wymagana tylko przy wdrażaniu funkcji z komputera:
+#     supabase link --project-ref <REF>
+#     supabase functions deploy scrape-otodom import-images enhance-text
+#
+#  project_id to lokalna nazwa katalogu roboczego — może być dowolna.
+# ============================================================================
+
+project_id = "wycena-nieruchomosci"
+
+# verify_jwt = true  ->  brama Supabase odrzuca żądania bez poprawnego tokenu
+# JESZCZE przed uruchomieniem funkcji. Dodatkowo każda funkcja sprawdza,
+# czy użytkownik znajduje się w tabeli `admins` (patrz _shared/admin.ts).
+
+[functions.scrape-otodom]
+verify_jwt = true
+
+[functions.import-images]
+verify_jwt = true
+
+[functions.enhance-text]
+verify_jwt = true

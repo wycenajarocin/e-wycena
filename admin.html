@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel ogłoszeń | Wycena — Beata Adamkiewicz-Dudek</title>
+<!-- Panel nie ma być indeksowany ani archiwizowany. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<link rel="icon" href="logo-white.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css?v=2">
+<style>
+  body{ background: var(--paper); }
+
+  .admin-bar{
+    background: var(--navy-deepest);
+    color: var(--white);
+    padding: 12px 0;
+    position: sticky; top: 0; z-index: 60;
+  }
+  .admin-bar .container{ display:flex; align-items:center; justify-content:space-between; gap: 14px; }
+  .admin-bar .brand img{ height: 34px; }
+  .admin-user{ display:flex; align-items:center; gap: 14px; font-size: 0.86rem; color: rgba(255,255,255,0.72); }
+  .admin-user a{ text-decoration: underline; }
+  @media (max-width: 620px){
+    .admin-user span.email{ display:none; }
+  }
+
+  .wrap{ padding: 34px 0 90px; }
+
+  /* ---------- Logowanie ---------- */
+  .login-card{
+    max-width: 420px;
+    margin: 60px auto;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 34px 32px;
+  }
+  .login-card h1{ font-size: 1.4rem; margin-bottom: 8px; }
+  .login-card p.hint{ color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 24px; }
+
+  /* ---------- Formularze ---------- */
+  label.lbl{
+    display:block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  input[type=text], input[type=email], input[type=password], input[type=number],
+  input[type=url], select, textarea{
+    width: 100%;
+    padding: 11px 13px;
+    font-family:'Inter',sans-serif;
+    font-size: 0.94rem;
+    color: var(--ink);
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    transition: border-color .18s ease;
+  }
+  input:focus, select:focus, textarea:focus{ outline:none; border-color: var(--blue); }
+  textarea{ resize: vertical; min-height: 110px; line-height: 1.55; }
+  .row{ margin-bottom: 18px; }
+  .help{ font-size: 0.78rem; color: var(--ink-soft); margin: 6px 0 0; }
+
+  .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid-4{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  @media (max-width: 860px){
+    .grid-2, .grid-3, .grid-4{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px){
+    .grid-2, .grid-3, .grid-4{ grid-template-columns: 1fr; }
+  }
+
+  .check{
+    display:flex; align-items:center; gap: 10px;
+    font-size: 0.92rem; cursor:pointer; user-select:none;
+  }
+  .check input{ width: 18px; height: 18px; accent-color: var(--blue); }
+
+  /* ---------- Zakładki ---------- */
+  .tabs{ display:flex; gap: 8px; flex-wrap:wrap; margin-bottom: 26px; }
+  .tab-btn{
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--ink-soft); cursor:pointer;
+    transition: all .18s ease;
+  }
+  .tab-btn:hover{ border-color: var(--blue); color: var(--blue); }
+  .tab-btn.active{ background: var(--navy); border-color: var(--navy); color: var(--white); }
+
+  .card{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 560px){ .card{ padding: 20px 18px; } }
+  .card h2{ font-size: 1.1rem; margin-bottom: 6px; }
+  .card h3{ font-size: 0.96rem; margin: 26px 0 14px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .card h3:first-of-type{ margin-top: 0; padding-top: 0; border-top: none; }
+  .card > p.sub{ color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 22px; }
+
+  .actions{ display:flex; gap: 12px; flex-wrap: wrap; align-items:center; }
+
+  /* ---------- Tabela ogłoszeń ---------- */
+  .listing-table{ width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .listing-table th{
+    text-align:left; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--ink-soft); padding: 0 12px 12px; border-bottom: 1px solid var(--line); font-weight: 600;
+  }
+  .listing-table td{ padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .listing-table tr:hover td{ background: #FAFCFD; }
+  .listing-table .thumb{
+    width: 74px; height: 56px; object-fit: cover; border-radius: 3px; background: var(--blue-pale);
+  }
+  .listing-table .t-title{ font-weight: 600; color: var(--ink); }
+  .listing-table .t-meta{ color: var(--ink-soft); font-size: 0.82rem; margin-top: 3px; }
+  .listing-table .t-actions{ display:flex; gap: 6px; flex-wrap: wrap; justify-content:flex-end; }
+  .pill{
+    display:inline-block; font-size: 0.74rem; font-weight: 600;
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .pill-on{ background: #E6F4EC; color: #1E7A47; }
+  .pill-off{ background: #F1F3F5; color: var(--ink-soft); }
+  .pill-src{ background: var(--blue-pale); color: #14507F; }
+
+  .table-scroll{ overflow-x: auto; }
+  @media (max-width: 760px){
+    .listing-table th:nth-child(3), .listing-table td:nth-child(3){ display:none; }
+  }
+
+  /* ---------- Zdjęcia ---------- */
+  .img-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .img-item{
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--white);
+    position: relative;
+  }
+  .img-item img{ width:100%; aspect-ratio: 4/3; object-fit: cover; }
+  .img-item .img-tools{
+    display:flex; gap: 4px; padding: 7px; justify-content:space-between; align-items:center;
+    border-top: 1px solid var(--line);
+  }
+  .img-item .img-tools button{
+    border: 1px solid var(--line);
+    background: var(--white);
+    border-radius: 3px;
+    width: 26px; height: 26px;
+    cursor:pointer; color: var(--ink-soft);
+    font-size: 0.82rem; line-height: 1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .img-item .img-tools button:hover{ border-color: var(--blue); color: var(--blue); }
+  .img-item .img-tools button.del:hover{ border-color: var(--danger); color: var(--danger); }
+  .img-main-flag{
+    position:absolute; top: 8px; left: 8px;
+    background: var(--blue); color: var(--white);
+    font-size: 0.68rem; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+  }
+  .img-pending{
+    position:absolute; top: 8px; right: 8px;
+    background: var(--warn); color: var(--white);
+    font-size: 0.68rem; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+  }
+
+  .dropzone{
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+    text-align:center;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    cursor:pointer;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .dropzone:hover, .dropzone.over{ border-color: var(--blue); background: var(--blue-pale); }
+
+  /* ---------- Log / postęp ---------- */
+  .log{
+    background: #10161A;
+    color: #C9D6DF;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-top: 16px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .log .ok{ color: #7EDCA2; }
+  .log .err{ color: #FF9A92; }
+  .log .warn{ color: #FFD48A; }
+  .log:empty{ display:none; }
+
+  .progress{
+    height: 6px; background: var(--line); border-radius: 999px; overflow:hidden; margin-top: 14px;
+  }
+  .progress > div{ height: 100%; background: var(--blue); width: 0%; transition: width .25s ease; }
+  .progress[hidden]{ display:none; }
+
+  .sticky-save{
+    position: sticky;
+    bottom: 0;
+    background: rgba(244,247,250,0.94);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--line);
+    padding: 16px 0;
+    margin-top: 10px;
+    z-index: 20;
+  }
+  .sticky-save .container{ display:flex; gap: 12px; flex-wrap: wrap; align-items:center; }
+  .save-status{ font-size: 0.86rem; color: var(--ink-soft); }
+
+  .stat-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; }
+  .stat{
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px; background: var(--white);
+  }
+  .stat strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size: 1.5rem; color: var(--navy); }
+  .stat span{ font-size: 0.8rem; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<div class="admin-bar">
+  <div class="container">
+    <a href="nieruchomosci.html" class="brand">
+      <img src="logo-white.png" alt="Wycena" width="631" height="763">
+      <div class="brand-text">
+        <strong>Panel ogłoszeń</strong>
+        <span>Wycena — Beata Adamkiewicz-Dudek</span>
+      </div>
+    </a>
+    <div class="admin-user" id="adminUser" hidden>
+      <span class="email" id="userEmail"></span>
+      <a href="nieruchomosci.html" target="_blank" rel="noopener">Podgląd strony</a>
+      <button class="btn btn-outline-white btn-sm" id="logoutBtn" type="button">Wyloguj</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="container">
+
+    <!-- =================== LOGOWANIE =================== -->
+    <div id="loginView">
+      <div class="login-card">
+        <h1>Zaloguj się</h1>
+        <p class="hint">Dostęp tylko dla kont dodanych do listy administratorów.</p>
+        <form id="loginForm">
+          <div class="row">
+            <label class="lbl" for="loginEmail">E-mail</label>
+            <input type="email" id="loginEmail" autocomplete="username" required>
+          </div>
+          <div class="row">
+            <label class="lbl" for="loginPassword">Hasło</label>
+            <input type="password" id="loginPassword" autocomplete="current-password" required>
+          </div>
+          <div class="notice notice-error" id="loginError" hidden></div>
+          <button class="btn btn-primary" type="submit" id="loginBtn" style="width:100%;margin-top:10px">
+            Zaloguj
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- =================== PANEL =================== -->
+    <div id="appView" hidden>
+
+      <div class="tabs" id="tabs">
+        <button class="tab-btn active" data-tab="list" type="button">Ogłoszenia</button>
+        <button class="tab-btn" data-tab="otodom" type="button">Import z Otodom</button>
+        <button class="tab-btn" data-tab="form" type="button">Dodaj / edytuj ręcznie</button>
+        <button class="tab-btn" data-tab="tools" type="button">Narzędzia i SEO</button>
+      </div>
+
+      <!-- ---------- Lista ---------- -->
+      <section id="tab-list">
+        <div class="card">
+          <div class="actions" style="justify-content:space-between;margin-bottom:20px">
+            <div>
+              <h2 style="margin-bottom:4px">Wszystkie ogłoszenia</h2>
+              <p class="sub" style="margin:0" id="listSummary">Wczytywanie…</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-outline-navy btn-sm" id="refreshList" type="button">Odśwież</button>
+              <button class="btn btn-primary btn-sm" id="newListingBtn" type="button">+ Nowe ogłoszenie</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="listing-table">
+              <thead>
+                <tr>
+                  <th style="width:90px">Zdjęcie</th>
+                  <th>Ogłoszenie</th>
+                  <th style="width:150px">Cena</th>
+                  <th style="width:110px">Status</th>
+                  <th style="width:220px"></th>
+                </tr>
+              </thead>
+              <tbody id="listBody"></tbody>
+            </table>
+          </div>
+          <div class="notice notice-error" id="listError" hidden style="margin-top:18px"></div>
+        </div>
+      </section>
+
+      <!-- ---------- Import z Otodom ---------- -->
+      <section id="tab-otodom" hidden>
+        <div class="card">
+          <h2>Import ogłoszenia z Otodom</h2>
+          <p class="sub">
+            Wklej link do ogłoszenia (np. <code>https://www.otodom.pl/pl/oferta/...</code>).
+            Pobierzemy tytuł, cenę, wszystkie parametry, opis oraz zdjęcia.
+            Dane trafią do formularza — możesz je poprawić przed publikacją.
+          </p>
+          <div class="row">
+            <label class="lbl" for="otodomUrl">Adres ogłoszenia</label>
+            <input type="url" id="otodomUrl" placeholder="https://www.otodom.pl/pl/oferta/..."
+                   autocomplete="off" spellcheck="false">
+          </div>
+          <div class="row">
+            <label class="check">
+              <input type="checkbox" id="otodomUseAi" checked>
+              Uporządkuj opis i wygeneruj opis SEO przy pomocy AI
+            </label>
+            <p class="help">
+              AI poprawia stylistykę i usuwa dane kontaktowe innego biura. Nie zmienia liczb
+              (cena, metraż, rok budowy). Działa tylko, jeśli ustawiono sekret OPENAI_API_KEY.
+            </p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="scrapeBtn" type="button">Pobierz dane z Otodom</button>
+            <span class="save-status" id="scrapeStatus"></span>
+          </div>
+          <div class="notice notice-error" id="scrapeError" hidden style="margin-top:18px"></div>
+          <div class="notice notice-warn" id="scrapeWarn" hidden style="margin-top:18px"></div>
+          <div class="log" id="scrapeLog"></div>
+        </div>
+      </section>
+
+      <!-- ---------- Formularz ---------- -->
+      <section id="tab-form" hidden>
+        <form id="propertyForm" autocomplete="off">
+          <div class="card">
+            <h2 id="formTitle">Nowe ogłoszenie</h2>
+            <p class="sub" id="formSubtitle">Pola oznaczone gwiazdką są wymagane.</p>
+
+            <h3>Podstawowe informacje</h3>
+            <div class="row">
+              <label class="lbl" for="f-title">Tytuł ogłoszenia *</label>
+              <input type="text" id="f-title" maxlength="140" required>
+            </div>
+            <div class="grid-2">
+              <div class="row">
+                <label class="lbl" for="f-transaction">Rodzaj transakcji *</label>
+                <select id="f-transaction">
+                  <option value="Sprzedaż">Sprzedaż</option>
+                  <option value="Wynajem">Wynajem</option>
+                </select>
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-propertyType">Typ nieruchomości *</label>
+                <input type="text" id="f-propertyType" list="typeOptions" required>
+                <datalist id="typeOptions">
+                  <option>Mieszkanie</option><option>Dom</option><option>Działka</option>
+                  <option>Lokal użytkowy</option><option>Garaż</option><option>Pokój</option>
+                  <option>Hala / magazyn</option><option>Inwestycja</option>
+                </datalist>
+              </div>
+            </div>
+            <div class="row">
+              <label class="lbl" for="f-slug">Adres podstrony (slug)</label>
+              <input type="text" id="f-slug" placeholder="generowany automatycznie z tytułu">
+              <p class="help">Widoczny w linku: <code>oferta.html?slug=<span id="slugPreview">…</span></code>.
+                Po opublikowaniu lepiej go już nie zmieniać (stary link przestanie działać).</p>
+            </div>
+
+            <h3>Cena</h3>
+            <div class="grid-4">
+              <div class="row">
+                <label class="lbl" for="f-price">Cena (zł)</label>
+                <input type="number" id="f-price" step="0.01" min="0">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-priceUnit">Jednostka</label>
+                <input type="text" id="f-priceUnit" placeholder="np. /mies.">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-pricePerM">Cena za m²</label>
+                <input type="number" id="f-pricePerM" step="0.01" min="0">
+                <p class="help">Puste = wyliczy się samo.</p>
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-rent">Czynsz (zł)</label>
+                <input type="number" id="f-rent" step="0.01" min="0">
+              </div>
+            </div>
+            <div class="row">
+              <label class="check">
+                <input type="checkbox" id="f-priceHidden">
+                Nie pokazuj ceny (wyświetl „Cena do uzgodnienia")
+              </label>
+            </div>
+
+            <h3>Lokalizacja</h3>
+            <div class="row">
+              <label class="lbl" for="f-location">Lokalizacja na karcie oferty</label>
+              <input type="text" id="f-location" placeholder="np. Jarocin, ul. Ks. J. Popiełuszki">
+            </div>
+            <div class="grid-4">
+              <div class="row">
+                <label class="lbl" for="f-city">Miejscowość</label>
+                <input type="text" id="f-city">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-district">Dzielnica</label>
+                <input type="text" id="f-district">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-street">Ulica</label>
+                <input type="text" id="f-street">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-voivodeship">Województwo</label>
+                <input type="text" id="f-voivodeship">
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="row">
+                <label class="lbl" for="f-lat">Szerokość geogr. (lat)</label>
+                <input type="number" id="f-lat" step="0.000001">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-lng">Długość geogr. (lng)</label>
+                <input type="number" id="f-lng" step="0.000001">
+                <p class="help">Uzupełnione współrzędne włączają przycisk „Pokaż na mapie".</p>
+              </div>
+            </div>
+
+            <h3>Parametry</h3>
+            <div class="grid-4">
+              <div class="row">
+                <label class="lbl" for="f-area">Powierzchnia (m²)</label>
+                <input type="number" id="f-area" step="0.01" min="0">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-rooms">Pokoje</label>
+                <input type="number" id="f-rooms" min="0" step="1">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-bathrooms">Łazienki</label>
+                <input type="number" id="f-bathrooms" min="0" step="1">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-floor">Piętro</label>
+                <input type="text" id="f-floor" placeholder="np. Parter/2">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-floorsTotal">Pięter w budynku</label>
+                <input type="number" id="f-floorsTotal" min="0" step="1">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-plotArea">Działka (m²)</label>
+                <input type="number" id="f-plotArea" step="0.01" min="0">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-year">Rok budowy</label>
+                <input type="number" id="f-year" min="1700" max="2100" step="1">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-market">Rynek</label>
+                <input type="text" id="f-market" list="marketOptions">
+                <datalist id="marketOptions"><option>Pierwotny</option><option>Wtórny</option></datalist>
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-buildingType">Rodzaj zabudowy</label>
+                <input type="text" id="f-buildingType">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-heating">Ogrzewanie</label>
+                <input type="text" id="f-heating">
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-condition">Stan wykończenia</label>
+                <input type="text" id="f-condition">
+              </div>
+            </div>
+
+            <h3>Opis i udogodnienia</h3>
+            <div class="row">
+              <label class="lbl" for="f-description">Opis</label>
+              <textarea id="f-description" rows="12"
+                placeholder="Akapity rozdziel pustym wierszem."></textarea>
+              <div class="actions" style="margin-top:12px">
+                <button class="btn btn-outline-navy btn-sm" id="aiBtn" type="button">
+                  Popraw tekst (AI)
+                </button>
+                <span class="save-status" id="aiStatus"></span>
+              </div>
+              <p class="help">
+                AI porządkuje styl i ortografię, usuwa dane kontaktowe i proponuje meta tagi.
+                Nie wymyśla faktów — wynik zawsze sprawdź przed publikacją.
+              </p>
+            </div>
+            <div class="row">
+              <label class="lbl" for="f-features">Udogodnienia (jedno w wierszu)</label>
+              <textarea id="f-features" rows="6" placeholder="Balkon&#10;Miejsce postojowe&#10;Winda"></textarea>
+            </div>
+            <div class="row">
+              <label class="lbl" for="f-details">Szczegóły — tabela (format: Etykieta | Wartość)</label>
+              <textarea id="f-details" rows="6"
+                placeholder="Rynek | Wtórny&#10;Forma własności | Pełna własność"></textarea>
+              <p class="help">Wyświetlane na podstronie oferty jako tabela „Szczegóły".</p>
+            </div>
+
+            <h3>Zdjęcia</h3>
+            <div class="dropzone" id="dropzone">
+              <strong>Przeciągnij zdjęcia tutaj</strong> lub kliknij, aby wybrać pliki<br>
+              <span style="font-size:0.82rem">
+                JPG / PNG / WebP. Pliki są automatycznie zmniejszane (maks. 1600 px)
+                i tworzona jest miniatura — oszczędza to miejsce i przyspiesza stronę.
+              </span>
+              <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple hidden>
+            </div>
+            <div class="progress" id="imgProgress" hidden><div></div></div>
+            <div class="img-grid" id="imgGrid"></div>
+            <p class="help" id="imgHint">Pierwsze zdjęcie jest zdjęciem głównym na liście ofert.</p>
+
+            <h3>SEO</h3>
+            <div class="grid-2">
+              <div class="row">
+                <label class="lbl" for="f-metaTitle">Tytuł SEO (maks. ~60 znaków)</label>
+                <input type="text" id="f-metaTitle" maxlength="70">
+                <p class="help"><span id="metaTitleLen">0</span>/60 znaków</p>
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-metaDescription">Opis SEO (120–155 znaków)</label>
+                <textarea id="f-metaDescription" rows="3" maxlength="180"></textarea>
+                <p class="help"><span id="metaDescLen">0</span>/155 znaków</p>
+              </div>
+            </div>
+
+            <h3>Publikacja</h3>
+            <div class="grid-3">
+              <div class="row">
+                <label class="lbl" for="f-status">Status</label>
+                <select id="f-status">
+                  <option>Dostępna</option><option>Zarezerwowana</option>
+                  <option>Sprzedana</option><option>Wynajęta</option><option>Nieaktywna</option>
+                </select>
+              </div>
+              <div class="row">
+                <label class="lbl" for="f-sortOrder">Kolejność (większe = wyżej)</label>
+                <input type="number" id="f-sortOrder" step="1" value="0">
+              </div>
+              <div class="row" style="display:flex;flex-direction:column;justify-content:flex-end;gap:12px">
+                <label class="check">
+                  <input type="checkbox" id="f-published">
+                  Opublikowane (widoczne na stronie)
+                </label>
+                <label class="check">
+                  <input type="checkbox" id="f-featured">
+                  Wyróżnione (na początku listy)
+                </label>
+              </div>
+            </div>
+            <div class="row" id="sourceRow" hidden>
+              <label class="lbl">Źródło danych</label>
+              <p class="help" id="sourceInfo" style="margin:0"></p>
+            </div>
+
+            <div class="notice notice-error" id="formError" hidden style="margin-top:8px"></div>
+            <div class="log" id="saveLog"></div>
+          </div>
+
+          <div class="sticky-save">
+            <div class="container" style="padding:0">
+              <button class="btn btn-primary" type="submit" id="saveBtn">Zapisz ogłoszenie</button>
+              <button class="btn btn-outline-navy" type="button" id="saveAndPublishBtn">Zapisz i opublikuj</button>
+              <a class="btn btn-outline-navy" id="previewBtn" target="_blank" rel="noopener" hidden>Podgląd oferty</a>
+              <button class="btn btn-danger" type="button" id="deleteBtn" hidden>Usuń</button>
+              <span class="save-status" id="saveStatus"></span>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ---------- Narzędzia ---------- -->
+      <section id="tab-tools" hidden>
+        <div class="card">
+          <h2>Statystyki</h2>
+          <p class="sub">Szybki podgląd stanu oferty i zużycia darmowych limitów.</p>
+          <div class="stat-grid" id="statGrid"></div>
+        </div>
+
+        <div class="card">
+          <h2>Mapa witryny (sitemap.xml)</h2>
+          <p class="sub">
+            Google szybciej znajdzie nowe oferty, jeśli w katalogu strony będzie aktualny
+            plik <code>sitemap.xml</code>. Wygeneruj go po dodaniu lub usunięciu ogłoszeń,
+            a potem podmień plik w repozytorium (GitHub Pages) lub na serwerze FTP.
+          </p>
+          <div class="actions">
+            <button class="btn btn-primary" id="genSitemap" type="button">Wygeneruj i pobierz sitemap.xml</button>
+            <button class="btn btn-outline-navy" id="copySitemap" type="button">Kopiuj do schowka</button>
+            <span class="save-status" id="sitemapStatus"></span>
+          </div>
+          <textarea id="sitemapOut" rows="8" style="margin-top:16px;font-family:ui-monospace,Consolas,monospace;font-size:0.8rem" readonly hidden></textarea>
+        </div>
+
+        <div class="card">
+          <h2>Bezpieczeństwo</h2>
+          <p class="sub">Krótka lista kontrolna — warto ją przejrzeć raz na jakiś czas.</p>
+          <ul style="font-size:0.92rem;color:var(--ink-soft);line-height:1.9;padding-left:20px;margin:0">
+            <li>W Supabase → Authentication → Providers wyłączona opcja „Allow new users to sign up".</li>
+            <li>W tabeli <code>admins</code> są wyłącznie konta, które naprawdę mają tu dostęp.</li>
+            <li>Sekrety <code>OPENAI_API_KEY</code> i <code>SUPABASE_SERVICE_ROLE_KEY</code> ustawione
+                tylko w Edge Functions (nigdy w plikach strony).</li>
+            <li>Ustawiony sekret <code>ALLOWED_ORIGINS</code> z adresem Twojej strony.</li>
+            <li>Hasło do panelu długie i unikalne, najlepiej z menedżera haseł.</li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
+        crossorigin="anonymous"></script>
+<script src="config.js"></script>
+<script>
+/* ============================================================================
+   PANEL OGŁOSZEŃ
+
+   Co tu się dzieje:
+     • logowanie e-mail + hasło (Supabase Auth),
+     • sprawdzenie, czy konto jest na liście administratorów,
+     • CRUD ogłoszeń bezpośrednio przez REST Supabase (z RLS),
+     • upload zdjęć prosto z przeglądarki do Storage (ze zmniejszeniem
+       rozdzielczości i generowaniem miniatur po stronie przeglądarki),
+     • import z Otodom przez Edge Function `scrape-otodom`,
+     • przeniesienie zdjęć z Otodom przez Edge Function `import-images`.
+
+   Klucze wrażliwe (service_role, OpenAI) nie są tu w ogóle potrzebne.
+   ============================================================================ */
+(function () {
+  'use strict';
+
+  const CFG = window.WYCENA_CONFIG || {};
+  const BUCKET = 'property-images';
+  const MAX_EDGE = 1600;      // maks. dłuższy bok zdjęcia głównego
+  const THUMB_EDGE = 640;     // dłuższy bok miniatury
+  const IMPORT_BATCH = 4;     // ile zdjęć z Otodom na jedno wywołanie funkcji
+
+  /* ---------------------------------------------------------- inicjalizacja */
+  if (!window.supabase || !window.supabase.createClient) {
+    document.body.innerHTML =
+      '<div class="container" style="padding:60px 32px"><div class="notice notice-error">' +
+      'Nie udało się wczytać biblioteki Supabase (sprawdź połączenie z internetem ' +
+      'lub blokadę skryptów w przeglądarce).</div></div>';
+    return;
+  }
+  if (!CFG.supabaseUrl || /TWOJ-PROJEKT/.test(CFG.supabaseUrl) || /WKLEJ_TUTAJ/.test(CFG.supabaseAnonKey || '')) {
+    document.body.innerHTML =
+      '<div class="container" style="padding:60px 32px"><div class="notice notice-error">' +
+      'Uzupełnij plik <code>config.js</code> — pola <code>supabaseUrl</code> i ' +
+      '<code>supabaseAnonKey</code> (Supabase → Project Settings → API).</div></div>';
+    return;
+  }
+
+  const sb = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, storageKey: 'wycena-admin-auth' }
+  });
+  const FUNCTIONS_URL = String(CFG.supabaseUrl).replace(/\/$/, '') + '/functions/v1';
+
+  const $ = function (id) { return document.getElementById(id); };
+  const esc = function (v) {
+    return String(v === null || v === undefined ? '' : v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  };
+  const nf = new Intl.NumberFormat('pl-PL');
+
+  /* --------------------------------------------------------------- pomocniki */
+  function show(el, visible) { el.hidden = !visible; }
+
+  function notice(el, message, kind) {
+    if (!message) { el.hidden = true; return; }
+    el.className = 'notice notice-' + (kind || 'error');
+    el.textContent = message;
+    el.hidden = false;
+  }
+
+  function logTo(el, message, kind) {
+    const line = document.createElement('div');
+    if (kind) line.className = kind;
+    line.textContent = message;
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function clearLog(el) { el.innerHTML = ''; }
+
+  async function callFunction(name, payload) {
+    const { data: sessionData } = await sb.auth.getSession();
+    const token = sessionData && sessionData.session ? sessionData.session.access_token : null;
+    if (!token) throw new Error('Sesja wygasła — zaloguj się ponownie.');
+
+    const res = await fetch(FUNCTIONS_URL + '/' + name, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: CFG.supabaseAnonKey,
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify(payload || {})
+    });
+
+    let body = null;
+    try { body = await res.json(); } catch (e) { /* pusta odpowiedź */ }
+    if (!res.ok) {
+      throw new Error((body && body.error) || ('Funkcja ' + name + ' zwróciła błąd ' + res.status));
+    }
+    return body;
+  }
+
+  /* ======================================================================
+     LOGOWANIE
+     ====================================================================== */
+  const loginView = $('loginView');
+  const appView = $('appView');
+
+  async function checkAdmin() {
+    const { data, error } = await sb.from('admins').select('user_id').limit(1);
+    if (error) throw error;
+    return Array.isArray(data) && data.length > 0;
+  }
+
+  async function bootSession() {
+    const { data } = await sb.auth.getSession();
+    const session = data && data.session;
+    if (!session) {
+      show(loginView, true);
+      show(appView, false);
+      show($('adminUser'), false);
+      return;
+    }
+
+    let isAdmin = false;
+    try {
+      isAdmin = await checkAdmin();
+    } catch (err) {
+      notice($('loginError'), 'Błąd weryfikacji uprawnień: ' + err.message, 'error');
+    }
+
+    if (!isAdmin) {
+      await sb.auth.signOut();
+      show(loginView, true);
+      show(appView, false);
+      show($('adminUser'), false);
+      notice($('loginError'),
+        'To konto nie ma uprawnień administratora. Dodaj jego identyfikator do tabeli "admins" ' +
+        '(instrukcja w README-BACKEND.md).', 'error');
+      return;
+    }
+
+    $('userEmail').textContent = session.user.email || '';
+    show($('adminUser'), true);
+    show(loginView, false);
+    show(appView, true);
+    notice($('loginError'), '');
+    await loadList();
+  }
+
+  $('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const btn = $('loginBtn');
+    btn.disabled = true;
+    btn.textContent = 'Logowanie…';
+    notice($('loginError'), '');
+    const { error } = await sb.auth.signInWithPassword({
+      email: $('loginEmail').value.trim(),
+      password: $('loginPassword').value
+    });
+    btn.disabled = false;
+    btn.textContent = 'Zaloguj';
+    if (error) {
+      notice($('loginError'),
+        error.message === 'Invalid login credentials'
+          ? 'Nieprawidłowy e-mail lub hasło.'
+          : error.message, 'error');
+      return;
+    }
+    $('loginPassword').value = '';
+    await bootSession();
+  });
+
+  $('logoutBtn').addEventListener('click', async function () {
+    await sb.auth.signOut();
+    location.reload();
+  });
+
+  /* ======================================================================
+     ZAKŁADKI
+     ====================================================================== */
+  const TABS = ['list', 'otodom', 'form', 'tools'];
+  function openTab(name) {
+    TABS.forEach(function (t) { show($('tab-' + t), t === name); });
+    Array.from(document.querySelectorAll('.tab-btn')).forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-tab') === name);
+    });
+    if (name === 'tools') renderStats();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  $('tabs').addEventListener('click', function (e) {
+    const btn = e.target.closest('.tab-btn');
+    if (btn) openTab(btn.getAttribute('data-tab'));
+  });
+
+  /* ======================================================================
+     LISTA OGŁOSZEŃ
+     ====================================================================== */
+  let allListings = [];
+
+  async function loadList() {
+    notice($('listError'), '');
+    $('listSummary').textContent = 'Wczytywanie…';
+    const { data, error } = await sb
+      .from('properties')
+      .select('*, property_images(id,url,thumb_url,storage_path,thumb_path,position)')
+      .order('featured', { ascending: false })
+      .order('sort_order', { ascending: false })
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      notice($('listError'), 'Nie udało się wczytać listy: ' + error.message, 'error');
+      $('listSummary').textContent = '';
+      return;
+    }
+
+    allListings = (data || []).map(function (row) {
+      row.property_images = (row.property_images || [])
+        .sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+      return row;
+    });
+    renderList();
+  }
+
+  function renderList() {
+    const published = allListings.filter(function (p) { return p.published; }).length;
+    $('listSummary').textContent =
+      allListings.length + ' ogłoszeń w bazie · ' + published + ' opublikowanych · ' +
+      (allListings.length - published) + ' szkiców';
+
+    if (!allListings.length) {
+      $('listBody').innerHTML =
+        '<tr><td colspan="5" style="padding:40px;text-align:center;color:var(--ink-soft)">' +
+        'Brak ogłoszeń. Dodaj pierwsze — ręcznie lub importem z Otodom.</td></tr>';
+      return;
+    }
+
+    $('listBody').innerHTML = allListings.map(function (p) {
+      const img = p.property_images[0];
+      const price = p.price_hidden || p.price == null
+        ? 'do uzgodnienia'
+        : nf.format(Math.round(p.price)) + ' zł' + (p.price_unit || '');
+      const meta = [p.property_type, p.transaction_type, p.location].filter(Boolean).join(' · ');
+
+      return '<tr data-id="' + esc(p.id) + '">' +
+        '<td>' + (img
+          ? '<img class="thumb" src="' + esc(img.thumb_url || img.url) + '" alt="">'
+          : '<div class="thumb"></div>') + '</td>' +
+        '<td><div class="t-title">' + esc(p.title) + '</div>' +
+          '<div class="t-meta">' + esc(meta) +
+          (p.source === 'otodom' ? ' <span class="pill pill-src">Otodom</span>' : '') +
+          ' <span class="t-meta">' + p.property_images.length + ' zdj.</span></div></td>' +
+        '<td>' + esc(price) + '</td>' +
+        '<td><span class="pill ' + (p.published ? 'pill-on' : 'pill-off') + '">' +
+          (p.published ? 'Online' : 'Szkic') + '</span>' +
+          (p.status !== 'Dostępna' ? '<div class="t-meta">' + esc(p.status) + '</div>' : '') +
+        '</td>' +
+        '<td><div class="t-actions">' +
+          '<button class="btn btn-outline-navy btn-sm" data-act="edit" type="button">Edytuj</button>' +
+          '<button class="btn btn-outline-navy btn-sm" data-act="toggle" type="button">' +
+            (p.published ? 'Ukryj' : 'Publikuj') + '</button>' +
+          '<button class="btn btn-danger btn-sm" data-act="delete" type="button">Usuń</button>' +
+        '</div></td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  $('listBody').addEventListener('click', async function (e) {
+    const btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    const id = btn.closest('tr').getAttribute('data-id');
+    const listing = allListings.find(function (p) { return p.id === id; });
+    if (!listing) return;
+
+    const act = btn.getAttribute('data-act');
+    if (act === 'edit') {
+      loadIntoForm(listing);
+      openTab('form');
+    } else if (act === 'toggle') {
+      btn.disabled = true;
+      const { error } = await sb.from('properties')
+        .update({ published: !listing.published }).eq('id', id);
+      btn.disabled = false;
+      if (error) { notice($('listError'), error.message, 'error'); return; }
+      await loadList();
+    } else if (act === 'delete') {
+      if (!confirm('Usunąć ogłoszenie „' + listing.title + '" wraz ze zdjęciami? Tej operacji nie można cofnąć.')) return;
+      btn.disabled = true;
+      try {
+        const paths = [];
+        listing.property_images.forEach(function (img) {
+          if (img.storage_path) paths.push(img.storage_path);
+          if (img.thumb_path) paths.push(img.thumb_path);
+        });
+        if (paths.length) await sb.storage.from(BUCKET).remove(paths);
+        const { error } = await sb.from('properties').delete().eq('id', id);
+        if (error) throw error;
+        if (editing.id === id) resetForm();
+        await loadList();
+      } catch (err) {
+        notice($('listError'), 'Nie udało się usunąć: ' + err.message, 'error');
+      }
+      btn.disabled = false;
+    }
+  });
+
+  $('refreshList').addEventListener('click', loadList);
+  $('newListingBtn').addEventListener('click', function () { resetForm(); openTab('form'); });
+
+  /* ======================================================================
+     FORMULARZ
+     ====================================================================== */
+  const editing = {
+    id: null,
+    source: 'manual',
+    sourceUrl: null,
+    sourceId: null,
+    county: null,      // powiat — nie ma pola w formularzu, ale nie chcemy go tracić
+    images: [],        // zdjęcia już zapisane w bazie
+    pendingFiles: [],  // pliki wybrane z dysku (jeszcze nie wysłane)
+    pendingRemote: []  // zdjęcia z Otodom do przeniesienia
+  };
+
+  function slugify(text) {
+    return String(text || '')
+      .toLowerCase()
+      .replace(/ą/g, 'a').replace(/ć/g, 'c').replace(/ę/g, 'e').replace(/ł/g, 'l')
+      .replace(/ń/g, 'n').replace(/ó/g, 'o').replace(/ś/g, 's').replace(/ź/g, 'z').replace(/ż/g, 'z')
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80);
+  }
+
+  function linesToArray(text) {
+    return String(text || '')
+      .split('\n')
+      .map(function (l) { return l.trim(); })
+      .filter(Boolean);
+  }
+
+  function parseDetails(text) {
+    return linesToArray(text).map(function (line) {
+      const parts = line.split('|');
+      return { label: (parts[0] || '').trim(), value: (parts.slice(1).join('|') || '').trim() };
+    }).filter(function (d) { return d.label && d.value; });
+  }
+
+  function numOrNull(id) {
+    const raw = $(id).value.trim();
+    if (raw === '') return null;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function intOrNull(id) {
+    const n = numOrNull(id);
+    return n == null ? null : Math.round(n);
+  }
+
+  function formToRow() {
+    const area = numOrNull('f-area');
+    const price = numOrNull('f-price');
+    let pricePerM = numOrNull('f-pricePerM');
+    if (pricePerM == null && price != null && area) pricePerM = Math.round((price / area) * 100) / 100;
+
+    return {
+      title: $('f-title').value.trim(),
+      transaction_type: $('f-transaction').value,
+      property_type: $('f-propertyType').value.trim(),
+      price: price,
+      price_unit: $('f-priceUnit').value.trim(),
+      price_per_m: pricePerM,
+      rent: numOrNull('f-rent'),
+      price_hidden: $('f-priceHidden').checked,
+      location: $('f-location').value.trim() || null,
+      city: $('f-city').value.trim() || null,
+      district: $('f-district').value.trim() || null,
+      street: $('f-street').value.trim() || null,
+      county: editing.county,
+      voivodeship: $('f-voivodeship').value.trim() || null,
+      lat: numOrNull('f-lat'),
+      lng: numOrNull('f-lng'),
+      area: area,
+      rooms: intOrNull('f-rooms'),
+      bathrooms: intOrNull('f-bathrooms'),
+      floor: $('f-floor').value.trim() || null,
+      floors_total: intOrNull('f-floorsTotal'),
+      plot_area: numOrNull('f-plotArea'),
+      year: intOrNull('f-year'),
+      market: $('f-market').value.trim() || null,
+      building_type: $('f-buildingType').value.trim() || null,
+      heating: $('f-heating').value.trim() || null,
+      condition: $('f-condition').value.trim() || null,
+      description: $('f-description').value.trim(),
+      features: linesToArray($('f-features').value),
+      details: parseDetails($('f-details').value),
+      status: $('f-status').value,
+      published: $('f-published').checked,
+      featured: $('f-featured').checked,
+      sort_order: intOrNull('f-sortOrder') || 0,
+      meta_title: $('f-metaTitle').value.trim() || null,
+      meta_description: $('f-metaDescription').value.trim() || null,
+      source: editing.source,
+      source_url: editing.sourceUrl,
+      source_id: editing.sourceId
+    };
+  }
+
+  function setVal(id, value) {
+    $(id).value = value === null || value === undefined ? '' : value;
+  }
+
+  function resetForm() {
+    editing.id = null;
+    editing.source = 'manual';
+    editing.sourceUrl = null;
+    editing.sourceId = null;
+    editing.county = null;
+    editing.images = [];
+    editing.pendingFiles = [];
+    editing.pendingRemote = [];
+
+    $('propertyForm').reset();
+    $('f-slug').removeAttribute('data-saved');
+    setVal('f-sortOrder', 0);
+    $('f-status').value = 'Dostępna';
+    $('f-transaction').value = 'Sprzedaż';
+    $('formTitle').textContent = 'Nowe ogłoszenie';
+    $('formSubtitle').textContent = 'Pola oznaczone gwiazdką są wymagane.';
+    show($('deleteBtn'), false);
+    show($('previewBtn'), false);
+    show($('sourceRow'), false);
+    notice($('formError'), '');
+    clearLog($('saveLog'));
+    $('saveStatus').textContent = '';
+    renderImages();
+    updateSlugPreview();
+    updateMetaCounters();
+  }
+
+  function loadIntoForm(row) {
+    resetForm();
+    editing.id = row.id;
+    editing.source = row.source || 'manual';
+    editing.sourceUrl = row.source_url || null;
+    editing.sourceId = row.source_id || null;
+    editing.county = row.county || null;
+    editing.images = (row.property_images || []).slice();
+
+    setVal('f-title', row.title);
+    $('f-transaction').value = row.transaction_type || 'Sprzedaż';
+    setVal('f-propertyType', row.property_type);
+    setVal('f-slug', row.slug);
+    $('f-slug').setAttribute('data-saved', row.slug || '');
+    setVal('f-price', row.price);
+    setVal('f-priceUnit', row.price_unit);
+    setVal('f-pricePerM', row.price_per_m);
+    setVal('f-rent', row.rent);
+    $('f-priceHidden').checked = Boolean(row.price_hidden);
+    setVal('f-location', row.location);
+    setVal('f-city', row.city);
+    setVal('f-district', row.district);
+    setVal('f-street', row.street);
+    setVal('f-voivodeship', row.voivodeship);
+    setVal('f-lat', row.lat);
+    setVal('f-lng', row.lng);
+    setVal('f-area', row.area);
+    setVal('f-rooms', row.rooms);
+    setVal('f-bathrooms', row.bathrooms);
+    setVal('f-floor', row.floor);
+    setVal('f-floorsTotal', row.floors_total);
+    setVal('f-plotArea', row.plot_area);
+    setVal('f-year', row.year);
+    setVal('f-market', row.market);
+    setVal('f-buildingType', row.building_type);
+    setVal('f-heating', row.heating);
+    setVal('f-condition', row.condition);
+    setVal('f-description', row.description);
+    setVal('f-features', (row.features || []).join('\n'));
+    setVal('f-details', (row.details || []).map(function (d) {
+      return d.label + ' | ' + d.value;
+    }).join('\n'));
+    $('f-status').value = row.status || 'Dostępna';
+    setVal('f-sortOrder', row.sort_order || 0);
+    $('f-published').checked = Boolean(row.published);
+    $('f-featured').checked = Boolean(row.featured);
+    setVal('f-metaTitle', row.meta_title);
+    setVal('f-metaDescription', row.meta_description);
+
+    $('formTitle').textContent = 'Edycja ogłoszenia';
+    $('formSubtitle').textContent = 'ID: ' + row.id;
+    show($('deleteBtn'), true);
+    $('previewBtn').href = 'oferta.html?slug=' + encodeURIComponent(row.slug);
+    show($('previewBtn'), true);
+
+    if (editing.source === 'otodom' && editing.sourceUrl) {
+      $('sourceInfo').innerHTML = 'Zaimportowano z Otodom: <a href="' + esc(editing.sourceUrl) +
+        '" target="_blank" rel="noopener noreferrer">' + esc(editing.sourceUrl) + '</a>';
+      show($('sourceRow'), true);
+    }
+
+    renderImages();
+    updateSlugPreview();
+    updateMetaCounters();
+  }
+
+  function updateSlugPreview() {
+    const slug = $('f-slug').value.trim() || slugify($('f-title').value) || 'oferta';
+    $('slugPreview').textContent = slug;
+  }
+  $('f-title').addEventListener('input', updateSlugPreview);
+  $('f-slug').addEventListener('input', updateSlugPreview);
+
+  function updateMetaCounters() {
+    $('metaTitleLen').textContent = $('f-metaTitle').value.length;
+    $('metaDescLen').textContent = $('f-metaDescription').value.length;
+  }
+  $('f-metaTitle').addEventListener('input', updateMetaCounters);
+  $('f-metaDescription').addEventListener('input', updateMetaCounters);
+
+  /* Jednostka ceny podpowiadana automatycznie przy zmianie typu transakcji. */
+  $('f-transaction').addEventListener('change', function () {
+    const unit = $('f-priceUnit');
+    if ($('f-transaction').value === 'Wynajem' && !unit.value) unit.value = '/mies.';
+    if ($('f-transaction').value === 'Sprzedaż' && unit.value === '/mies.') unit.value = '';
+  });
+
+  /* ======================================================================
+     ZDJĘCIA
+     ====================================================================== */
+  function renderImages() {
+    const parts = [];
+
+    editing.images.forEach(function (img, i) {
+      parts.push(
+        '<div class="img-item" data-kind="saved" data-index="' + i + '">' +
+          (i === 0 ? '<span class="img-main-flag">Główne</span>' : '') +
+          '<img src="' + esc(img.thumb_url || img.url) + '" alt="">' +
+          '<div class="img-tools">' +
+            '<div style="display:flex;gap:4px">' +
+              '<button type="button" data-act="left" title="Przesuń w lewo">&#8592;</button>' +
+              '<button type="button" data-act="right" title="Przesuń w prawo">&#8594;</button>' +
+            '</div>' +
+            '<button type="button" class="del" data-act="remove" title="Usuń zdjęcie">&times;</button>' +
+          '</div>' +
+        '</div>');
+    });
+
+    editing.pendingFiles.forEach(function (item, i) {
+      parts.push(
+        '<div class="img-item" data-kind="file" data-index="' + i + '">' +
+          '<span class="img-pending">Do wysłania</span>' +
+          '<img src="' + esc(item.preview) + '" alt="">' +
+          '<div class="img-tools"><span style="font-size:0.74rem;color:var(--ink-soft)">' +
+            esc(item.file.name.slice(0, 16)) + '</span>' +
+            '<button type="button" class="del" data-act="drop-file" title="Usuń z kolejki">&times;</button>' +
+          '</div>' +
+        '</div>');
+    });
+
+    editing.pendingRemote.forEach(function (item, i) {
+      parts.push(
+        '<div class="img-item" data-kind="remote" data-index="' + i + '">' +
+          '<span class="img-pending">Z Otodom</span>' +
+          '<img src="' + esc(item.thumbUrl || item.url) + '" alt="" referrerpolicy="no-referrer">' +
+          '<div class="img-tools"><span style="font-size:0.74rem;color:var(--ink-soft)">do przeniesienia</span>' +
+            '<button type="button" class="del" data-act="drop-remote" title="Pomiń to zdjęcie">&times;</button>' +
+          '</div>' +
+        '</div>');
+    });
+
+    $('imgGrid').innerHTML = parts.join('');
+    const total = editing.images.length + editing.pendingFiles.length + editing.pendingRemote.length;
+    $('imgHint').textContent = total === 0
+      ? 'Brak zdjęć — karta oferty pokaże grafikę zastępczą.'
+      : 'Zdjęć: ' + total + '. Pierwsze jest zdjęciem głównym na liście ofert. ' +
+        'Zdjęcia oznaczone „Do wysłania" / „Z Otodom" zostaną dodane po zapisaniu ogłoszenia.';
+  }
+
+  $('imgGrid').addEventListener('click', async function (e) {
+    const btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    const item = btn.closest('.img-item');
+    const index = Number(item.getAttribute('data-index'));
+    const act = btn.getAttribute('data-act');
+
+    if (act === 'drop-file') {
+      URL.revokeObjectURL(editing.pendingFiles[index].preview);
+      editing.pendingFiles.splice(index, 1);
+      renderImages();
+      return;
+    }
+    if (act === 'drop-remote') {
+      editing.pendingRemote.splice(index, 1);
+      renderImages();
+      return;
+    }
+    if (act === 'left' || act === 'right') {
+      const target = act === 'left' ? index - 1 : index + 1;
+      if (target < 0 || target >= editing.images.length) return;
+      const tmp = editing.images[index];
+      editing.images[index] = editing.images[target];
+      editing.images[target] = tmp;
+      renderImages();
+      await persistImageOrder();
+      return;
+    }
+    if (act === 'remove') {
+      const img = editing.images[index];
+      if (!confirm('Usunąć to zdjęcie?')) return;
+      try {
+        const paths = [];
+        if (img.storage_path) paths.push(img.storage_path);
+        if (img.thumb_path) paths.push(img.thumb_path);
+        if (paths.length) await sb.storage.from(BUCKET).remove(paths);
+        const { error } = await sb.from('property_images').delete().eq('id', img.id);
+        if (error) throw error;
+        editing.images.splice(index, 1);
+        renderImages();
+        await persistImageOrder();
+      } catch (err) {
+        notice($('formError'), 'Nie udało się usunąć zdjęcia: ' + err.message, 'error');
+      }
+    }
+  });
+
+  async function persistImageOrder() {
+    for (let i = 0; i < editing.images.length; i++) {
+      const img = editing.images[i];
+      if (img.position === i) continue;
+      const { error } = await sb.from('property_images').update({ position: i }).eq('id', img.id);
+      if (error) {
+        notice($('formError'), 'Nie udało się zapisać kolejności: ' + error.message, 'error');
+        return;
+      }
+      img.position = i;
+    }
+  }
+
+  /* --- Zmniejszanie zdjęć w przeglądarce ---------------------------------
+     Dzięki temu na darmowy 1 GB Storage wchodzi kilkaset ogłoszeń,
+     a strona na telefonie ładuje miniatury, nie pliki z lustrzanki.      */
+  function loadImage(file) {
+    return new Promise(function (resolve, reject) {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = function () { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('nie udało się odczytać pliku')); };
+      img.src = url;
+    });
+  }
+
+  async function resizeToBlob(img, maxEdge, quality) {
+    const scale = Math.min(1, maxEdge / Math.max(img.naturalWidth, img.naturalHeight));
+    const w = Math.max(1, Math.round(img.naturalWidth * scale));
+    const h = Math.max(1, Math.round(img.naturalHeight * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, w, h);
+    return new Promise(function (resolve, reject) {
+      canvas.toBlob(function (blob) {
+        if (blob) resolve(blob);
+        else reject(new Error('konwersja zdjęcia nie udała się'));
+      }, 'image/jpeg', quality);
+    });
+  }
+
+  function queueFiles(fileList) {
+    const files = Array.from(fileList).filter(function (f) { return /^image\//.test(f.type); });
+    files.forEach(function (file) {
+      editing.pendingFiles.push({ file: file, preview: URL.createObjectURL(file) });
+    });
+    renderImages();
+  }
+
+  $('dropzone').addEventListener('click', function () { $('fileInput').click(); });
+  $('fileInput').addEventListener('change', function (e) {
+    queueFiles(e.target.files);
+    e.target.value = '';
+  });
+  ['dragenter', 'dragover'].forEach(function (evt) {
+    $('dropzone').addEventListener(evt, function (e) {
+      e.preventDefault();
+      $('dropzone').classList.add('over');
+    });
+  });
+  ['dragleave', 'drop'].forEach(function (evt) {
+    $('dropzone').addEventListener(evt, function (e) {
+      e.preventDefault();
+      $('dropzone').classList.remove('over');
+      if (evt === 'drop' && e.dataTransfer) queueFiles(e.dataTransfer.files);
+    });
+  });
+
+  async function uploadPendingFiles(propertyId, startPosition, log) {
+    const progress = $('imgProgress');
+    const bar = progress.firstElementChild;
+    const total = editing.pendingFiles.length;
+    if (!total) return startPosition;
+
+    show(progress, true);
+    let position = startPosition;
+
+    for (let i = 0; i < total; i++) {
+      const item = editing.pendingFiles[i];
+      bar.style.width = Math.round((i / total) * 100) + '%';
+      try {
+        const img = await loadImage(item.file);
+        const mainBlob = await resizeToBlob(img, MAX_EDGE, 0.82);
+        const thumbBlob = await resizeToBlob(img, THUMB_EDGE, 0.72);
+        const stamp = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        const prefix = propertyId + '/' + String(position).padStart(3, '0') + '-' + stamp;
+        const mainPath = prefix + '.jpg';
+        const thumbPath = prefix + '-thumb.jpg';
+
+        let up = await sb.storage.from(BUCKET)
+          .upload(mainPath, mainBlob, { contentType: 'image/jpeg', upsert: true });
+        if (up.error) throw up.error;
+        up = await sb.storage.from(BUCKET)
+          .upload(thumbPath, thumbBlob, { contentType: 'image/jpeg', upsert: true });
+        if (up.error) throw up.error;
+
+        const mainUrl = sb.storage.from(BUCKET).getPublicUrl(mainPath).data.publicUrl;
+        const thumbUrl = sb.storage.from(BUCKET).getPublicUrl(thumbPath).data.publicUrl;
+
+        const ins = await sb.from('property_images').insert({
+          property_id: propertyId,
+          url: mainUrl,
+          thumb_url: thumbUrl,
+          storage_path: mainPath,
+          thumb_path: thumbPath,
+          position: position,
+          alt: $('f-title').value.trim() + ' — zdjęcie ' + (position + 1)
+        }).select('id,url,thumb_url,storage_path,thumb_path,position').single();
+        if (ins.error) throw ins.error;
+
+        editing.images.push(ins.data);
+        position += 1;
+        logTo(log, '✓ wysłano: ' + item.file.name, 'ok');
+      } catch (err) {
+        logTo(log, '✗ ' + item.file.name + ': ' + (err.message || err), 'err');
+      }
+    }
+
+    bar.style.width = '100%';
+    editing.pendingFiles.forEach(function (item) { URL.revokeObjectURL(item.preview); });
+    editing.pendingFiles = [];
+    setTimeout(function () { show(progress, false); bar.style.width = '0%'; }, 600);
+    return position;
+  }
+
+  async function importPendingRemote(propertyId, startPosition, log) {
+    const total = editing.pendingRemote.length;
+    if (!total) return startPosition;
+
+    const progress = $('imgProgress');
+    const bar = progress.firstElementChild;
+    show(progress, true);
+
+    let position = startPosition;
+    let done = 0;
+
+    while (editing.pendingRemote.length) {
+      const batch = editing.pendingRemote.splice(0, IMPORT_BATCH);
+      try {
+        const result = await callFunction('import-images', {
+          propertyId: propertyId,
+          images: batch,
+          startPosition: position
+        });
+        position = result.nextPosition;
+        (result.images || []).forEach(function (img) { editing.images.push(img); });
+        logTo(log, '✓ przeniesiono zdjęcia: ' + result.imported + '/' + batch.length, 'ok');
+        (result.failed || []).forEach(function (f) {
+          logTo(log, '✗ ' + f.reason, 'err');
+        });
+      } catch (err) {
+        logTo(log, '✗ partia zdjęć nieudana: ' + (err.message || err), 'err');
+      }
+      done += batch.length;
+      bar.style.width = Math.round((done / total) * 100) + '%';
+    }
+
+    setTimeout(function () { show(progress, false); bar.style.width = '0%'; }, 600);
+    return position;
+  }
+
+  /* ======================================================================
+     ZAPIS
+     ====================================================================== */
+  async function resolveSlug(base, selfId) {
+    const { data, error } = await sb.rpc('unique_slug', {
+      base_text: base,
+      self_id: selfId || null
+    });
+    if (error) throw new Error('Nie udało się wygenerować adresu podstrony: ' + error.message);
+    return data;
+  }
+
+  async function saveProperty(forcePublish) {
+    const log = $('saveLog');
+    clearLog(log);
+    notice($('formError'), '');
+
+    const row = formToRow();
+    if (!row.title) { notice($('formError'), 'Tytuł jest wymagany.', 'error'); return; }
+    if (!row.property_type) { notice($('formError'), 'Typ nieruchomości jest wymagany.', 'error'); return; }
+    if (forcePublish) row.published = true;
+
+    const saveBtn = $('saveBtn');
+    const publishBtn = $('saveAndPublishBtn');
+    saveBtn.disabled = publishBtn.disabled = true;
+    $('saveStatus').textContent = 'Zapisywanie…';
+
+    try {
+      /* --- slug --- */
+      const slugInput = $('f-slug').value.trim();
+      const base = slugInput || slugify(row.title) || 'oferta';
+      if (!editing.id || slugInput !== ($('f-slug').getAttribute('data-saved') || '')) {
+        row.slug = await resolveSlug(base, editing.id);
+      } else {
+        row.slug = slugInput;
+      }
+
+      /* --- rekord --- */
+      let saved;
+      if (editing.id) {
+        const res = await sb.from('properties').update(row).eq('id', editing.id)
+          .select('*, property_images(id,url,thumb_url,storage_path,thumb_path,position)').single();
+        if (res.error) throw res.error;
+        saved = res.data;
+        logTo(log, '✓ zaktualizowano ogłoszenie', 'ok');
+      } else {
+        const { data: sessionData } = await sb.auth.getSession();
+        if (sessionData && sessionData.session) row.created_by = sessionData.session.user.id;
+        const res = await sb.from('properties').insert(row)
+          .select('*, property_images(id,url,thumb_url,storage_path,thumb_path,position)').single();
+        if (res.error) throw res.error;
+        saved = res.data;
+        editing.id = saved.id;
+        logTo(log, '✓ utworzono ogłoszenie (' + saved.slug + ')', 'ok');
+      }
+
+      setVal('f-slug', saved.slug);
+      $('f-slug').setAttribute('data-saved', saved.slug);
+      $('f-published').checked = Boolean(saved.published);
+      updateSlugPreview();
+
+      /* --- zdjęcia --- */
+      let position = editing.images.length;
+      position = await uploadPendingFiles(editing.id, position, log);
+      position = await importPendingRemote(editing.id, position, log);
+
+      /* --- odświeżenie stanu --- */
+      const refreshed = await sb.from('properties')
+        .select('*, property_images(id,url,thumb_url,storage_path,thumb_path,position)')
+        .eq('id', editing.id).single();
+      if (!refreshed.error && refreshed.data) {
+        editing.images = (refreshed.data.property_images || [])
+          .sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+      }
+      renderImages();
+
+      $('formTitle').textContent = 'Edycja ogłoszenia';
+      $('formSubtitle').textContent = 'ID: ' + editing.id;
+      show($('deleteBtn'), true);
+      $('previewBtn').href = 'oferta.html?slug=' + encodeURIComponent(saved.slug);
+      show($('previewBtn'), true);
+      $('saveStatus').textContent = saved.published
+        ? 'Zapisano i opublikowano.'
+        : 'Zapisano jako szkic (niewidoczne na stronie).';
+      logTo(log, '✓ gotowe', 'ok');
+
+      await loadList();
+    } catch (err) {
+      notice($('formError'), 'Błąd zapisu: ' + (err.message || err), 'error');
+      logTo(log, '✗ ' + (err.message || err), 'err');
+      $('saveStatus').textContent = '';
+    } finally {
+      saveBtn.disabled = publishBtn.disabled = false;
+    }
+  }
+
+  $('propertyForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    saveProperty(false);
+  });
+  $('saveAndPublishBtn').addEventListener('click', function () { saveProperty(true); });
+
+  $('deleteBtn').addEventListener('click', async function () {
+    if (!editing.id) return;
+    if (!confirm('Usunąć to ogłoszenie wraz ze zdjęciami? Tej operacji nie można cofnąć.')) return;
+    try {
+      const paths = [];
+      editing.images.forEach(function (img) {
+        if (img.storage_path) paths.push(img.storage_path);
+        if (img.thumb_path) paths.push(img.thumb_path);
+      });
+      if (paths.length) await sb.storage.from(BUCKET).remove(paths);
+      const { error } = await sb.from('properties').delete().eq('id', editing.id);
+      if (error) throw error;
+      resetForm();
+      await loadList();
+      openTab('list');
+    } catch (err) {
+      notice($('formError'), 'Nie udało się usunąć: ' + err.message, 'error');
+    }
+  });
+
+  /* ======================================================================
+     AI — poprawa tekstu w trybie ręcznym
+     ====================================================================== */
+  $('aiBtn').addEventListener('click', async function () {
+    const btn = $('aiBtn');
+    btn.disabled = true;
+    $('aiStatus').textContent = 'Pracuję nad tekstem…';
+    try {
+      const result = await callFunction('enhance-text', {
+        title: $('f-title').value.trim(),
+        description: $('f-description').value.trim(),
+        features: linesToArray($('f-features').value),
+        propertyType: $('f-propertyType').value.trim(),
+        transactionType: $('f-transaction').value,
+        location: $('f-location').value.trim(),
+        area: numOrNull('f-area'),
+        rooms: intOrNull('f-rooms'),
+        price: numOrNull('f-price')
+      });
+      if (result.title) setVal('f-title', result.title);
+      if (result.description) setVal('f-description', result.description);
+      if (result.features && result.features.length) setVal('f-features', result.features.join('\n'));
+      if (result.metaTitle) setVal('f-metaTitle', result.metaTitle);
+      if (result.metaDescription) setVal('f-metaDescription', result.metaDescription);
+      updateSlugPreview();
+      updateMetaCounters();
+      $('aiStatus').textContent = 'Gotowe — sprawdź tekst przed publikacją.';
+    } catch (err) {
+      $('aiStatus').textContent = '';
+      notice($('formError'), 'AI: ' + (err.message || err), 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  /* ======================================================================
+     IMPORT Z OTODOM
+     ====================================================================== */
+  $('scrapeBtn').addEventListener('click', async function () {
+    const btn = $('scrapeBtn');
+    const log = $('scrapeLog');
+    const url = $('otodomUrl').value.trim();
+
+    notice($('scrapeError'), '');
+    notice($('scrapeWarn'), '');
+    clearLog(log);
+
+    if (!url) { notice($('scrapeError'), 'Wklej link do ogłoszenia.', 'error'); return; }
+
+    btn.disabled = true;
+    $('scrapeStatus').textContent = 'Pobieram dane z Otodom…';
+    logTo(log, '→ pobieranie: ' + url);
+
+    try {
+      const result = await callFunction('scrape-otodom', {
+        url: url,
+        useAi: $('otodomUseAi').checked
+      });
+      const L = result.listing;
+
+      logTo(log, '✓ pobrano: ' + L.title, 'ok');
+      logTo(log, '  typ: ' + L.propertyType + ' · ' + L.transactionType +
+        ' · cena: ' + (L.price != null ? nf.format(L.price) + ' zł' : 'brak'));
+      logTo(log, '  lokalizacja: ' + (L.location || 'brak'));
+      logTo(log, '  parametry: ' + [
+        L.area != null ? L.area + ' m²' : null,
+        L.rooms != null ? L.rooms + ' pok.' : null,
+        L.floor,
+        L.year ? 'rok ' + L.year : null
+      ].filter(Boolean).join(' · '));
+      logTo(log, '  zdjęć do przeniesienia: ' + L.images.length);
+      logTo(log, '  udogodnienia: ' + (L.features.length ? L.features.join(', ') : 'brak'));
+
+      if (result.ai && result.ai.applied) logTo(log, '✓ tekst uporządkowany przez AI', 'ok');
+      if (result.ai && result.ai.error) logTo(log, '! AI: ' + result.ai.error, 'warn');
+
+      if (result.duplicate) {
+        notice($('scrapeWarn'),
+          'Uwaga: to ogłoszenie zostało już kiedyś zaimportowane („' + result.duplicate.title +
+          '"). Jeśli zapiszesz je jako nowe, powstanie duplikat — lepiej edytuj istniejące ' +
+          'ogłoszenie na liście.', 'warn');
+      }
+
+      /* --- wypełnienie formularza --- */
+      resetForm();
+      editing.source = 'otodom';
+      editing.sourceUrl = L.sourceUrl;
+      editing.sourceId = L.sourceId;
+      editing.county = L.county || null;
+      editing.pendingRemote = L.images.slice();
+
+      setVal('f-title', L.title);
+      $('f-transaction').value = L.transactionType;
+      setVal('f-propertyType', L.propertyType);
+      setVal('f-price', L.price);
+      setVal('f-priceUnit', L.priceUnit);
+      setVal('f-pricePerM', L.pricePerM);
+      setVal('f-rent', L.rent);
+      $('f-priceHidden').checked = Boolean(L.priceHidden);
+      setVal('f-location', L.location);
+      setVal('f-city', L.city);
+      setVal('f-district', L.district);
+      setVal('f-street', L.street);
+      setVal('f-voivodeship', L.voivodeship);
+      setVal('f-lat', L.lat);
+      setVal('f-lng', L.lng);
+      setVal('f-area', L.area);
+      setVal('f-rooms', L.rooms);
+      setVal('f-bathrooms', L.bathrooms);
+      setVal('f-floor', L.floor);
+      setVal('f-floorsTotal', L.floorsTotal);
+      setVal('f-plotArea', L.plotArea);
+      setVal('f-year', L.year);
+      setVal('f-market', L.market);
+      setVal('f-buildingType', L.buildingType);
+      setVal('f-heating', L.heating);
+      setVal('f-condition', L.condition);
+      setVal('f-description', L.description);
+      setVal('f-features', (L.features || []).join('\n'));
+      setVal('f-details', (L.details || []).map(function (d) {
+        return d.label + ' | ' + d.value;
+      }).join('\n'));
+      setVal('f-metaTitle', result.metaTitle);
+      setVal('f-metaDescription', result.metaDescription);
+
+      $('sourceInfo').innerHTML = 'Dane pobrane z: <a href="' + esc(L.sourceUrl) +
+        '" target="_blank" rel="noopener noreferrer">' + esc(L.sourceUrl) + '</a>';
+      show($('sourceRow'), true);
+      $('formTitle').textContent = 'Nowe ogłoszenie (z Otodom)';
+      $('formSubtitle').textContent =
+        'Sprawdź dane i kliknij „Zapisz i opublikuj". Zdjęcia zostaną przeniesione po zapisie.';
+
+      renderImages();
+      updateSlugPreview();
+      updateMetaCounters();
+
+      $('scrapeStatus').textContent = 'Dane w formularzu — przejdź do zakładki obok.';
+      openTab('form');
+    } catch (err) {
+      notice($('scrapeError'), err.message || String(err), 'error');
+      logTo(log, '✗ ' + (err.message || err), 'err');
+      $('scrapeStatus').textContent = '';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  /* ======================================================================
+     NARZĘDZIA: statystyki + sitemap
+     ====================================================================== */
+  function renderStats() {
+    const published = allListings.filter(function (p) { return p.published; });
+    const images = allListings.reduce(function (sum, p) {
+      return sum + (p.property_images ? p.property_images.length : 0);
+    }, 0);
+    const fromOtodom = allListings.filter(function (p) { return p.source === 'otodom'; }).length;
+    const noPhoto = published.filter(function (p) {
+      return !p.property_images || p.property_images.length === 0;
+    }).length;
+    const noSeo = published.filter(function (p) { return !p.meta_description; }).length;
+
+    $('statGrid').innerHTML =
+      '<div class="stat"><strong>' + allListings.length + '</strong><span>ogłoszeń w bazie</span></div>' +
+      '<div class="stat"><strong>' + published.length + '</strong><span>opublikowanych</span></div>' +
+      '<div class="stat"><strong>' + images + '</strong><span>zdjęć w Storage</span></div>' +
+      '<div class="stat"><strong>' + fromOtodom + '</strong><span>z importu Otodom</span></div>' +
+      '<div class="stat"><strong>' + noPhoto + '</strong><span>opublikowanych bez zdjęć</span></div>' +
+      '<div class="stat"><strong>' + noSeo + '</strong><span>bez opisu SEO</span></div>';
+  }
+
+  function buildSitemap() {
+    const base = String(CFG.siteUrl || '').replace(/\/$/, '');
+    const today = new Date().toISOString().slice(0, 10);
+    const urls = [
+      { loc: base + '/', priority: '1.0', lastmod: today },
+      { loc: base + '/nieruchomosci.html', priority: '0.9', lastmod: today }
+    ];
+    allListings.filter(function (p) { return p.published; }).forEach(function (p) {
+      urls.push({
+        loc: base + '/oferta.html?slug=' + encodeURIComponent(p.slug),
+        priority: '0.8',
+        lastmod: (p.updated_at || p.created_at || today).slice(0, 10)
+      });
+    });
+
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      urls.map(function (u) {
+        return '  <url>\n' +
+          '    <loc>' + u.loc.replace(/&/g, '&amp;') + '</loc>\n' +
+          '    <lastmod>' + u.lastmod + '</lastmod>\n' +
+          '    <priority>' + u.priority + '</priority>\n' +
+          '  </url>';
+      }).join('\n') +
+      '\n</urlset>\n';
+  }
+
+  $('genSitemap').addEventListener('click', function () {
+    if (!CFG.siteUrl || /TWOJADOMENA/.test(CFG.siteUrl)) {
+      $('sitemapStatus').textContent = 'Najpierw ustaw siteUrl w config.js.';
+      return;
+    }
+    const xml = buildSitemap();
+    const out = $('sitemapOut');
+    out.value = xml;
+    show(out, true);
+
+    const blob = new Blob([xml], { type: 'application/xml' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sitemap.xml';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    $('sitemapStatus').textContent = 'Pobrano. Podmień plik sitemap.xml w katalogu strony.';
+  });
+
+  $('copySitemap').addEventListener('click', async function () {
+    const xml = buildSitemap();
+    try {
+      await navigator.clipboard.writeText(xml);
+      $('sitemapStatus').textContent = 'Skopiowano do schowka.';
+    } catch (err) {
+      const out = $('sitemapOut');
+      out.value = xml;
+      show(out, true);
+      out.select();
+      $('sitemapStatus').textContent = 'Skopiuj ręcznie z pola poniżej (Ctrl+C).';
+    }
+  });
+
+  /* ======================================================================
+     START
+     ====================================================================== */
+  resetForm();
+  bootSession();
+})();
+</script>
+
+</body>
+</html>
