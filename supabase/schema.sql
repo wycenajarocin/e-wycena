@@ -346,6 +346,45 @@ grant all on public.properties, public.property_images, public.admins, public.ap
   to service_role;
 grant usage, select on all sequences in schema public to service_role;
 
+-- ---------------------------------------------------------------------------
+-- 11. Opinie Google (cache widżetu na stronie)
+--    JEDEN wiersz (id = 1) z ostatnio pobraną oceną i maks. 5 opiniami.
+--    Zapis wykonuje WYŁĄCZNIE Edge Function `refresh-google-reviews`,
+--    uruchamiana raz dziennie przez harmonogram (patrz README-BACKEND.md,
+--    sekcja „Opinie Google"). Strona WWW tylko CZYTA ten wiersz — nigdy nie
+--    odpytuje Google bezpośrednio, więc ruch na stronie nie zużywa limitu
+--    darmowych zapytań do Google Places API.
+-- ---------------------------------------------------------------------------
+create table if not exists public.google_reviews (
+  id                 smallint primary key default 1,
+  place_id           text,
+  place_name         text,
+  rating             numeric(2,1),
+  user_ratings_total integer,
+  reviews            jsonb not null default '[]'::jsonb,
+  maps_uri           text,
+  fetched_at         timestamptz,
+  updated_at         timestamptz not null default now(),
+  constraint google_reviews_singleton check (id = 1)
+);
+
+alter table public.google_reviews enable row level security;
+
+drop policy if exists "google_reviews_public_read" on public.google_reviews;
+create policy "google_reviews_public_read" on public.google_reviews
+  for select to anon, authenticated
+  using (true);
+-- Brak polityk insert/update/delete dla anon/authenticated — zapis wyłącznie
+-- przez service_role (Edge Function), który omija RLS.
+
+drop trigger if exists google_reviews_touch_updated_at on public.google_reviews;
+create trigger google_reviews_touch_updated_at
+  before update on public.google_reviews
+  for each row execute function public.touch_updated_at();
+
+grant select on public.google_reviews to anon, authenticated;
+grant all on public.google_reviews to service_role;
+
 -- ============================================================================
 --  KONIEC. Następny krok: README-BACKEND.md, sekcja "3. Konto administratora".
 -- ============================================================================

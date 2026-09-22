@@ -18,6 +18,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="cookie-consent.js" defer></script>
 <style>
   :root{
     --navy: #3A4853;
@@ -32,6 +33,7 @@
     --ink-soft: #5B6773;
     --line: rgba(58,72,83,0.14);
     --radius: 4px;
+    --warn: #C97A2E;
   }
 
   *{ box-sizing: border-box; }
@@ -117,8 +119,48 @@
   }
   .nav-links a{ transition: color .2s ease; }
   .nav-links a:hover{ color: var(--white); }
-  @media (max-width: 720px){
-    .nav-links{ display:none; }
+
+  /* Hamburger — widoczny tylko na małych ekranach */
+  .nav-toggle{
+    display:none;
+    width: 42px; height: 42px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: var(--radius);
+    color: var(--white);
+    cursor:pointer;
+    align-items:center; justify-content:center;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .nav-toggle span{
+    display:block; width:18px; height:2px; background: currentColor; border-radius: 2px;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(6px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+
+  @media (max-width: 860px){
+    .nav-toggle{ display:flex; }
+    .nav .container{ position: relative; }
+    .nav-links{
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--navy-deepest);
+      flex-direction: column;
+      gap: 0;
+      padding: 6px 0 14px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 18px 30px rgba(0,0,0,0.28);
+      display: none;
+    }
+    .nav-links.open{ display:flex; }
+    .nav-links a{ padding: 14px 32px; }
   }
 
   /* ---------- Buttons ---------- */
@@ -252,6 +294,26 @@
   .about-text p:last-of-type{ margin-bottom: 28px; }
   .google-btn{ display:inline-flex; align-items:center; gap:10px; }
   .google-btn svg{ width:18px; height:18px; }
+
+  /* ---------- Widżet opinii Google ---------- */
+  .google-reviews{ margin-top: 56px; padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .gr-summary{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom: 22px; }
+  .gr-score{ font-family:'Space Grotesk',sans-serif; font-size:2.2rem; font-weight:700; color:var(--white); line-height:1; }
+  .gr-stars{ display:inline-flex; gap:2px; color: var(--warn); }
+  .gr-count{ font-size:0.92rem; color: rgba(255,255,255,0.65); }
+  .gr-list{ display:grid; gap:16px; margin-bottom:26px; }
+  .gr-card{ background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:20px 22px; }
+  .gr-card-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .gr-avatar{ width:38px; height:38px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+  .gr-avatar-fallback{ display:flex; align-items:center; justify-content:center; background:var(--blue); color:var(--white); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  .gr-author{ display:block; font-weight:600; color:var(--white); font-size:0.94rem; }
+  .gr-author a{ color:var(--white); text-decoration:underline; }
+  .gr-time{ display:block; font-size:0.78rem; color:rgba(255,255,255,0.5); }
+  .gr-text{ margin:8px 0 0; font-size:0.92rem; line-height:1.55; color:rgba(255,255,255,0.75); }
+  .gr-footer{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .gr-powered{ display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; color:rgba(255,255,255,0.5); }
+  .gr-cta{ background: transparent; color: var(--white); border-color: rgba(255,255,255,0.55); }
+  .gr-cta:hover{ border-color: var(--white); background: rgba(255,255,255,0.08); }
 
   /* ---------- Transition / clients section ---------- */
   
@@ -471,6 +533,18 @@
     font-size: 0.82rem;
     color: rgba(255,255,255,0.45);
   }
+  .footer-bottom a,
+  .footer-bottom .cc-footer-link{
+    color: inherit;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+  .footer-bottom a:hover,
+  .footer-bottom .cc-footer-link:hover{ color: rgba(255,255,255,0.75); }
 </style>
 </head>
 <body>
@@ -484,7 +558,10 @@
 <span>Beata Adamkiewicz-Dudek</span>
 </div>
 </div>
-<div class="nav-links"><a href="posrednictwo.html">Pośrednictwo</a>
+<button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+<div class="nav-links" id="navLinks"><a href="posrednictwo.html">Pośrednictwo</a>
 <a href="nieruchomosci.html">Nieruchomości</a>
 <a href="#wycena">Wycena</a>
 <a href="#standardy">Standardy</a>
@@ -523,12 +600,9 @@
 <p>Zajmuję się wyceną nieruchomości oraz pośrednictwem w obrocie nieruchomościami. Do każdej współpracy podchodzę indywidualnie, z dużą starannością i zaangażowaniem. Wiedza prawnicza, wieloletnie doświadczenie oraz znajomość rynku pozwalają mi spojrzeć na nieruchomość z wielu perspektyw i zapewnić klientom rzetelne, przemyślane wsparcie na każdym etapie współpracy.</p>
 <p>Największą wartością mojej pracy są dla mnie zaufanie i zadowolenie klientów. Potwierdzają je liczne pozytywne opinie, które można znaleźć na moim profilu Google.</p>
 <p>Prywatnie jestem miłośniczką aktywnego stylu życia. Interesuję się sportem, szczególnie bieganiem, a także uwielbiam podróże, które pozwalają mi odkrywać nowe miejsca i czerpać inspirację z otaczającego świata.</p>
-<a class="btn btn-primary google-btn" href="https://g.page/r/CRISj9t2xrHaEBM/review" rel="noopener" target="_blank">
-<svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
-Zobacz opinie w Google
-</a>
 </div>
 </div>
+<div class="google-reviews" id="googleReviews"></div>
 </div>
 </section>
 <section class="section-transition" id="posrednictwo">
@@ -670,16 +744,31 @@ Zobacz opinie w Google
 <div class="footer-bottom">
 <span>© 2026 Wycena Beata Adamkiewicz-Dudek. Wszelkie prawa zastrzeżone.</span>
 <span>12 lat doświadczenia na rynku nieruchomości</span>
+<span><a href="polityka-prywatnosci.html">Polityka prywatności</a> · <button type="button" class="cc-footer-link" onclick="window.openCookieSettings &amp;&amp; window.openCookieSettings()">Ustawienia cookies</button></span>
 </div>
 </div>
 </footer>
 <script src="config.js"></script>
 <script src="api.js"></script>
+<script src="google-reviews-widget.js"></script>
 <script>
   const nav = document.getElementById('siteNav');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 40) { nav.classList.add('scrolled'); }
     else { nav.classList.remove('scrolled'); }
+  });
+
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
   });
 
   (function () {

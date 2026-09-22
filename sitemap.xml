@@ -21,4 +21,8 @@
     <loc>https://www.e-wycena.com.pl/wycena.html</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.e-wycena.com.pl/polityka-prywatnosci.html</loc>
+    <priority>0.3</priority>
+  </url>
 </urlset>

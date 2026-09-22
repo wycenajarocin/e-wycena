@@ -245,6 +245,18 @@ footer{
   font-size: 0.8rem;
   color: rgba(255,255,255,0.45);
 }
+.footer-bottom a,
+.footer-bottom .cc-footer-link{
+  color: inherit;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+.footer-bottom a:hover,
+.footer-bottom .cc-footer-link:hover{ color: rgba(255,255,255,0.75); }
 
 /* ---------- Wspólne elementy stanu ---------- */
 .notice{

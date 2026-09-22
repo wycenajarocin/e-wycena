@@ -17,6 +17,7 @@ administracyjny, import ogłoszeń z Otodom i obróbka tekstu przez AI.
 | `admin.html` | Panel ogłoszeń: logowanie, lista, dodawanie ręczne, import z Otodom, zdjęcia, SEO, sitemap. |
 | `config.js` | **Jedyny plik do uzupełnienia.** Adres projektu Supabase, klucz publiczny, dane kontaktowe. |
 | `api.js` | Warstwa danych stron publicznych (czyste `fetch`, bez bibliotek). |
+| `google-reviews-widget.js` | Widżet opinii Google na `index.html` i `posrednictwo.html` — czyta wyłącznie tabelę `google_reviews` (cache), patrz sekcja 15. |
 | `theme.css` | Wspólny motyw (kolory, nawigacja, przyciski, stopka). |
 | `logo-white.png` | Logo wyodrębnione z kodu HTML — patrz punkt 9. |
 | `robots.txt`, `sitemap.xml` | SEO. |
@@ -29,6 +30,7 @@ administracyjny, import ogłoszeń z Otodom i obróbka tekstu przez AI.
 | `supabase/functions/scrape-otodom/` | Pobiera i parsuje ogłoszenie z Otodom, opcjonalnie porządkuje tekst przez AI. |
 | `supabase/functions/import-images/` | Przenosi zdjęcia z Otodom do Twojego Storage. |
 | `supabase/functions/enhance-text/` | Poprawia tekst wpisany ręcznie + generuje meta tagi SEO. |
+| `supabase/functions/refresh-google-reviews/` | Raz dziennie pobiera ocenę i opinie z Google Places API (New) i zapisuje je w tabeli `google_reviews`. Patrz sekcja 15. |
 | `supabase/functions/_shared/` | Wspólny kod: CORS, autoryzacja, OpenAI, parser Otodom. |
 
 ---
@@ -384,3 +386,154 @@ Nazwy pól w bazie są w `snake_case`, a frontend używa `camelCase` —
 tłumaczenie odbywa się w jednym miejscu: funkcja `mapRow()` w `api.js`.
 Dodając nową kolumnę, wystarczy dopisać ją tam oraz do listy
 `PUBLIC_COLUMNS` w tym samym pliku.
+
+---
+
+## 15. Opinie Google (widżet ocen)
+
+Widżet na `index.html` i `posrednictwo.html` pokazuje ocenę, liczbę opinii
+i 5 najnowszych opinii z wizytówki Google Firmy. Działa w architekturze
+"raz dziennie odśwież w tle, strona tylko czyta cache":
+
+```
+Google Places API (New)
+        ↑  1× dziennie, wywołanie z harmonogramu
+Edge Function „refresh-google-reviews”  (klucz Google — sekret, nigdy w przeglądarce)
+        ↓  zapisuje wynik
+Tabela public.google_reviews  (1 wiersz — cache)
+        ↑  zwykły odczyt REST (klucz anon), przy KAŻDYM wejściu na stronę
+google-reviews-widget.js  →  wyświetla ocenę + 5 opinii + przycisk do Google
+```
+
+**Strona WWW nigdy nie odpytuje Google.** Niezależnie od tego, ile osób
+wejdzie na stronę, do Google Places API idzie dokładnie jedno zapytanie na
+dobę (harmonogram) — to gwarantuje, że darmowy limit nie zostanie
+przekroczony.
+
+### 15.1 Włącz Places API (New) w Google Cloud
+
+1. [console.cloud.google.com](https://console.cloud.google.com/) → wybierz
+   projekt (lub utwórz nowy).
+2. **Włącz płatność (Billing)** na koncie — Google wymaga aktywnej karty
+   nawet przy korzystaniu wyłącznie z darmowego limitu. Przy 1
+   zapytaniu dziennie realny koszt to 0 zł, ale bez włączonego rozliczenia
+   API w ogóle nie zadziała.
+3. **APIs & Services → Library** → wyszukaj **„Places API (New)”** → **Enable**.
+   (To inne API niż stare „Places API” — upewnij się, że włączasz wersję „New”.)
+4. **APIs & Services → Credentials → Create credentials → API key.**
+5. Od razu ogranicz klucz (**Edit API key**):
+   - **API restrictions** → **Restrict key** → zaznacz tylko **Places API (New)**.
+   - **Application restrictions** → **IP addresses** — na razie zostaw
+     bez ograniczeń (funkcja woła Google z serwerów Supabase o zmiennych
+     adresach IP); klucz i tak nigdy nie trafia do przeglądarki.
+
+### 15.2 Znajdź swój Place ID
+
+To **nie jest** to samo, co krótki link `g.page/...` używany dziś do przycisku
+„Zobacz opinie”. Znajdź właściwy identyfikator:
+
+1. Wejdź na [developers.google.com/maps/documentation/places/web-service/place-id](https://developers.google.com/maps/documentation/places/web-service/place-id)
+   → widget **„Place ID Finder”** na dole strony.
+2. Wpisz nazwę i miejscowość kancelarii (np. „Kancelaria Rzeczoznawcy
+   Majątkowego Wycena Beata Adamkiewicz-Dudek, Jarocin”), kliknij właściwy
+   wynik na mapie.
+3. Skopiuj **Place ID** (zaczyna się zwykle od `ChIJ...`).
+
+### 15.3 Ustaw sekrety w Supabase
+
+Dopisz do `supabase\.env.secrets` (na podstawie `.env.secrets.example`):
+
+```
+GOOGLE_PLACES_API_KEY=klucz-z-kroku-15.1
+GOOGLE_PLACE_ID=identyfikator-z-kroku-15.2
+CRON_SECRET=dowolny-dlugi-losowy-ciag-znakow
+```
+
+`CRON_SECRET` możesz wygenerować dowolnie, np. w PowerShell:
+
+```powershell
+[guid]::NewGuid().ToString() + [guid]::NewGuid().ToString()
+```
+
+Wyślij sekrety i wdróż funkcję (dopisz ją do istniejącej komendy z sekcji 4):
+
+```powershell
+cd D:\Pulpito\mamastrona\STRONA09
+$sb = "$env:LOCALAPPDATA\supabase-cli\supabase.exe"
+
+& $sb secrets set --project-ref TWOJ_REF --env-file supabase\.env.secrets
+& $sb functions deploy --project-ref TWOJ_REF --use-api refresh-google-reviews
+```
+
+### 15.4 Utwórz tabelę cache
+
+Jeśli już uruchamiałeś `supabase/schema.sql` wcześniej — uruchom go
+**ponownie w całości** (SQL Editor → wklej → Run). Skrypt jest idempotentny
+i doda tylko nową tabelę `google_reviews` (sekcja 11 pliku), nie ruszając
+reszty danych.
+
+### 15.5 Zaplanuj codzienne odświeżanie (pg_cron)
+
+**SQL Editor → New query** — włącz rozszerzenia i zaplanuj wywołanie funkcji
+raz dziennie (podmień `TWOJ-PROJEKT-REF` i `TWOJ_CRON_SECRET` na wartości z
+kroku 15.3; adres znajdziesz w **Project Settings → API → Project URL**):
+
+```sql
+create extension if not exists pg_cron with schema extensions;
+create extension if not exists pg_net with schema extensions;
+
+select cron.schedule(
+  'refresh-google-reviews-daily',
+  '0 3 * * *',  -- codziennie o 03:00 UTC (04:00/05:00 czasu polskiego)
+  $$
+  select net.http_post(
+    url     := 'https://TWOJ-PROJEKT-REF.supabase.co/functions/v1/refresh-google-reviews',
+    headers := jsonb_build_object(
+                 'Content-Type', 'application/json',
+                 'X-Cron-Secret', 'TWOJ_CRON_SECRET'
+               ),
+    body    := '{}'::jsonb
+  );
+  $$
+);
+```
+
+Sprawdź, że zadanie istnieje: `select * from cron.job;`
+
+### 15.6 Pierwsze wywołanie — nie czekaj do jutra
+
+Wywołaj funkcję ręcznie raz, żeby cache wypełnił się od razu (PowerShell):
+
+```powershell
+Invoke-RestMethod -Method Post `
+  -Uri "https://TWOJ-PROJEKT-REF.supabase.co/functions/v1/refresh-google-reviews" `
+  -Headers @{ "X-Cron-Secret" = "TWOJ_CRON_SECRET" }
+```
+
+Odpowiedź `{"ok":true,"rating":...,"reviewCount":...}` oznacza sukces.
+Sprawdź też **Table Editor → google_reviews** — powinien pojawić się
+1 wiersz. Odśwież `index.html` w przeglądarce — widżet powinien pokazać
+prawdziwą ocenę i opinie zamiast zapasowego przycisku.
+
+### 15.7 Zgodność z wymogami Google (atrybucja)
+
+Widżet spełnia wymagania Google dla treści z Places API:
+
+- zawsze pokazuje znak **„Opinie dostarczone przez Google”** z logo Google,
+- każda opinia jest podpisana imieniem i nazwiskiem autora z linkiem do
+  jego profilu Google (`authorAttribution`), bez zmiany treści opinii,
+- zawsze jest widoczny przycisk **„Zobacz wszystkie opinie w Google”**
+  prowadzący na pełną wizytówkę,
+- cache jest odświeżany co 24h — mieści się w dozwolonym przez Google
+  oknie do 30 dni na przechowywanie danych z Places API.
+
+### 15.8 Gdy coś nie działa
+
+| Objaw | Przyczyna i rozwiązanie |
+|---|---|
+| Widżet pokazuje tylko przycisk „Zobacz opinie w Google” (stary wygląd) | Normalne, dopóki tabela `google_reviews` jest pusta — patrz krok 15.6. |
+| Funkcja zwraca 401 „Brak uprawnień” | Nagłówek `X-Cron-Secret` nie zgadza się z sekretem `CRON_SECRET`. |
+| Funkcja zwraca 500 „Brak konfiguracji” | Nie ustawiono `GOOGLE_PLACE_ID` lub `GOOGLE_PLACES_API_KEY` — wróć do kroku 15.3. |
+| Google Places API zwraca błąd 403 | Nie włączono rozliczenia (Billing) w Google Cloud albo włączono starą wersję „Places API” zamiast „Places API (New)”. |
+| `select * from cron.job;` jest puste | Rozszerzenia `pg_cron`/`pg_net` nie zostały włączone, albo zapytanie z kroku 15.5 nie wykonało się — sprawdź komunikat błędu w SQL Editor. |
+| Liczba opinii w widżecie różni się od tej na Google Maps | Google Places API zwraca maks. 5 „najbardziej trafnych” opinii (nie wszystkie) — to ograniczenie samego API, nie błąd. |

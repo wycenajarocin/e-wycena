@@ -21,3 +21,9 @@ verify_jwt = true
 
 [functions.enhance-text]
 verify_jwt = true
+
+# Wywoływana przez harmonogram (pg_cron), nie przez zalogowanego użytkownika —
+# bramka JWT byłaby tu przeszkodą. Zamiast tego funkcja sama sprawdza nagłówek
+# X-Cron-Secret (sekret CRON_SECRET) — patrz supabase/functions/refresh-google-reviews.
+[functions.refresh-google-reviews]
+verify_jwt = false
